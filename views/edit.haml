@@ -1,0 +1,11 @@
+
+%a{href: '/admin'} Admin
+
+%div
+	Editer l'article
+
+	%form{action: "/admin/edit/#{@article.key}", method: 'post'}
+		%input{type: 'text', name: 'title', value: @article.title}
+		%input{type: 'text', name: 'content', value: @article.content}
+		%input{type: "submit"}
+			Valider

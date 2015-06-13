@@ -1,0 +1,14 @@
+<div id="content">
+
+	<h1 class="title border-pixel">The Freaking Title</h1>
+
+	<div id="images">
+		<% @posts.each do |post| %>
+			<div class="col-sm-4">
+				 <a href="post/<%= post[:id]%>">
+				<div class="block border-pixel" style="background-image: url('./images/<%=post[:icon]%>')"></div>
+				</a>
+			</div>
+		<% end %>
+	</div>
+</div>

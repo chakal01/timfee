@@ -1,0 +1,10 @@
+- @articles.each do |article|
+	%div
+		= article.date
+	%div
+		= article.title
+	%div
+		%a{href: "/admin/edit/#{article.key}"} Edit
+	%hr
+
+%a{href: '/admin/new'} New Article

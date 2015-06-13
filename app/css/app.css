@@ -1,0 +1,71 @@
+#content{
+  width: 800px;
+  margin: auto;
+  font-family: Verdana;
+  font-size: 12px;
+  text-align: center;
+}
+
+#images{
+  padding: 10px;
+  margin-top: 30px;
+  margin-bottom: 50px;
+
+}
+
+.title{
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.border-pixel{
+   box-shadow: 
+      
+      -4px 0px 0px 0px #000000,
+      4px 0px 0px 0px #000000,
+      0px -4px 0px 0px #000000,
+      0px 4px 0px 0px #000000;
+}
+
+.block:hover{
+   box-shadow: 
+
+   -4px 0px 0px 0px #000000,
+      4px 0px 0px 0px #000000,
+      0px -4px 0px 0px #000000,
+      0px 4px 0px 0px #000000,
+      5px 5px 50px 0px #c0c0c0,
+      0px -5px 50px 0px #c0c0c0,
+      -5px -5px 50px 0px #c0c0c0,
+      5px 0px 50px 0px #c0c0c0;
+
+}
+.block{
+  -webkit-transition: all .3s ease;
+     -moz-transition: all .3s ease;
+       -o-transition: all .3s ease;
+      -ms-transition: all .3s ease;
+          transition: all .3s ease;
+          
+  margin: auto;
+  margin-bottom: 50px;
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  
+  /*box-shadow: 
+      -4px 0px 0px 0px #ffffff,
+      4px 0px 0px 0px #ffffff,
+      0px -4px 0px 0px #ffffff,
+      0px 4px 0px 0px #ffffff,
+      
+      -4px -4px 0px 0px #000000,
+      -4px 4px 0px 0px #000000,
+      4px -4px 0px 0px #000000,
+      4px 4px 0px 0px #000000,
+      
+      -8px 0px 0px 0px #000000,
+      8px 0px 0px 0px #000000,
+      0px -8px 0px 0px #000000,
+      0px 8px 0px 0px #000000;*/
+}
