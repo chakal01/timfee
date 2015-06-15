@@ -1,16 +1,20 @@
-# myapp.rb
 require 'bundler'
 Bundler.require(:default)
 
-require 'sinatra'
-require 'sinatra/base'
-require 'sinatra/activerecord'
-require 'sinatra/namespace'
-require 'sinatra/assetpack'
-
-require './config/environments'
+require 'yaml'
 require './models/post'
 require './helpers/auth_helper'
+
+db = YAML.load_file('./config/database.yml')["development"]
+
+  ActiveRecord::Base.establish_connection(
+      adapter: 'postgresql',
+      host: db["host"],
+      username: db["username"],
+      password: db["password"],
+      database: db["database"],
+      encoding: db["encoding"]
+  )
 
 class App < Sinatra::Base
   register Sinatra::AssetPack
@@ -19,16 +23,17 @@ class App < Sinatra::Base
   set :root, File.dirname(__FILE__)
 
   assets do
-    js :application, [
-      '/js/jquery-1.11.2.min.js',
-      '/js/app.js'
-    ]
+    # js :application, [
+    #   '/js/jquery-1.11.2.min.js',
+    #   '/js/app.js'
+    # ]
 
-    css :application, [
-      '/css/app.css'
-     ]
+    # css :application, [
+    #   '/css/app.css'
+    #  ]
     serve '/images', from: 'app/images' 
-
+    serve '/css', from: 'app/css'
+    serve '/js', from: 'app/js'
     js_compression :jsmin
     css_compression :sass
   end

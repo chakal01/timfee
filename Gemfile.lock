@@ -29,7 +29,6 @@ GEM
       daemon_controller (>= 1.2.0)
       rack
       rake (>= 0.8.1)
-    pg (0.18.1)
     pg (0.18.1-x64-mingw32)
     rack (1.6.1)
     rack-protection (1.5.3)
