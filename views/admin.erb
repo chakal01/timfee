@@ -1,0 +1,28 @@
+
+<div id="content" class="text-center">
+<h1 class="title border-pixel">Liste des posts</h1>
+
+<table class="table">
+	<thead>
+		<th>Titre</th>
+		<th>Actif</th>
+		<th></th>
+	<tbody>
+	<% @posts.each do |post| %>
+		<tr>
+		<td><%= post.titre %></td>
+		<td><%= post.actif %></td>
+		<td style="text-align: center">
+      <a href="/admin/<%= post.id%>">
+        <span class="glyphicon glyphicon-edit" title="Editer"></span>
+      </a>
+      <a href="/admin/<%= post.id%>/delete" title="Supprimer" data-confirm= 'Are you sure?'>
+        <span class="glyphicon glyphicon-trash"></span>
+      </a>
+    </td>
+  <% end %>
+</table>
+
+<a href='/admin/new'>Nouveau post</a>
+
+</div>

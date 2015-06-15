@@ -19,8 +19,11 @@ ActiveRecord::Schema.define(version: 20150315151515) do
   create_table "posts", force: :cascade do |t|
     t.string   "titre"
     t.string   "content"
-    t.datetime "date"
+    t.string   "date"
     t.boolean  "actif"
+    t.string   "icon"
+    t.string   "color"
+    t.integer  "views"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

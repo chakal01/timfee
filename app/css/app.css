@@ -3,6 +3,8 @@
   margin: auto;
   font-family: Verdana;
   font-size: 12px;
+}
+.text-center{
   text-align: center;
 }
 
@@ -68,4 +70,12 @@
       8px 0px 0px 0px #000000,
       0px -8px 0px 0px #000000,
       0px 8px 0px 0px #000000;*/
+}
+
+#preview{
+  padding: 10px;
+
+  border: 2px solid #cecece ;
+  min-height: 500px;
+  overflow-y: scroll;
 }

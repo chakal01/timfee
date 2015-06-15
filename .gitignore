@@ -1,4 +1,5 @@
-Gemmfile.lock
+Gemfile.lock
 /tmp
 /public
 config/database.yml
+db/schema.rb

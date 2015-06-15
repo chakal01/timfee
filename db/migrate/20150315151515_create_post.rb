@@ -3,8 +3,11 @@ class CreatePost < ActiveRecord::Migration
     create_table :posts do |t|
       t.string :titre
       t.string :content
-      t.datetime :date
+      t.string :date
       t.boolean :actif
+      t.string :icon
+      t.string :color
+      t.integer :views
       t.timestamps
     end
   end
