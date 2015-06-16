@@ -3,7 +3,9 @@ Bundler.require(:default)
 
 require 'yaml'
 require './models/post'
+require './models/image'
 require './helpers/auth_helper'
+require 'securerandom'
 
 db = YAML.load_file('./config/database.yml')["development"]
 
@@ -23,14 +25,6 @@ class App < Sinatra::Base
   set :root, File.dirname(__FILE__)
 
   assets do
-    # js :application, [
-    #   '/js/jquery-1.11.2.min.js',
-    #   '/js/app.js'
-    # ]
-
-    # css :application, [
-    #   '/css/app.css'
-    #  ]
     serve '/images', from: 'app/images' 
     serve '/css', from: 'app/css'
     serve '/js', from: 'app/js'
@@ -48,9 +42,9 @@ class App < Sinatra::Base
   end
 
   get '/' do
-    # @posts = Post.all
-    @posts = ["first", "P3060006", "P3060007", "P3060010", 
-        "P3060012", "P4030001", "P4030002", "P4030003"].each_with_index.map { |icon,i| {icon: "#{icon}.jpg", id: i} }
+    @posts = Post.all
+    # @posts = ["first", "P3060006", "P3060007", "P3060010", 
+        # "P3060012", "P4030001", "P4030002", "P4030003"].each_with_index.map { |icon,i| {icon: "#{icon}.jpg", id: i} }
     erb :main
   end
 
@@ -84,8 +78,9 @@ class App < Sinatra::Base
     end
 
     post '/new' do
+      puts params
       Post.create(titre: params[:titre], content: params[:content], date: params[:date], 
-        icon: params[:icon], actif: params[:actif], color: params[:color],views: 0)
+        icon_id: params[:icon], actif: params[:actif], color: params[:color],views: 0)
       redirect '/admin'
     end
 
@@ -95,6 +90,18 @@ class App < Sinatra::Base
       @titre = "Editer #{@post.titre}"
       erb :edit
     end
+
+    post "/upload" do
+      puts params
+      post = Post.find(params[:id])
+      format = params['myfile'][:filename].split('.')[1].downcase
+      img = Image.create(titre: params[:titre], post_id: post.id, file: SecureRandom.hex[0..7]+'.'+format)
+      File.open("./app/images/#{post.folder_hash}/#{img.file}", "wb") do |f|
+        f.write(params['myfile'][:tempfile].read)
+      end
+      redirect '/admin/'+params[:id]
+    end
+
 
     get '/:id/delete' do
       @post = Post.find(params[:id])
@@ -106,7 +113,7 @@ class App < Sinatra::Base
       @post = Post.find(params[:id])
       @post.update_attributes(
         titre: params[:titre], content: params[:content], date: params[:date], 
-        icon: params[:icon], actif: params[:actif], color: params[:color]
+        icon_id: params[:icon], actif: params[:actif], color: params[:color]
         ) unless @post.nil?
       redirect '/admin'
     end

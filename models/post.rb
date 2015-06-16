@@ -1,4 +1,11 @@
+require 'securerandom'
+require 'fileutils'
+
 class Post < ActiveRecord::Base
+  has_many :images
+  belongs_to :icon, class_name: 'Image', foreign_key: :icon_id
+  before_create :set_folder_hash
+  after_create :create_folder
 	def day
     mois = case self.date.strftime("%B")
     when "January"
@@ -30,5 +37,17 @@ class Post < ActiveRecord::Base
     end
     return self.date.strftime("%d<br>#{mois}<br>%Y")
 	end
+
+  private
+    def set_folder_hash
+      self.folder_hash = SecureRandom.hex[0..7]
+    end
+
+    def create_folder
+      path = "./app/images/#{self.folder_hash}"
+      unless File.directory?(path)
+        FileUtils.mkpath(path)
+      end
+    end
 
 end
