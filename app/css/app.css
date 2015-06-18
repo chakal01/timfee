@@ -1,8 +1,19 @@
-#content{
-  width: 800px;
-  margin: auto;
-  font-family: Verdana;
+html, body{
+  background-color: #FFE3AA !important;
+  height: 100%;
+  font-family: Verdana !important;
   font-size: 12px;
+}
+
+#content{
+  padding-top: 100px;
+  width: 65%;
+  min-width: 800px;
+  margin: auto;
+  height: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  overflow: hidden;
 }
 .text-center{
   text-align: center;
@@ -15,32 +26,31 @@
 
 }
 
-.title{
-  padding-top: 10px;
-  padding-bottom: 10px;
+#title{
+  margin-top: 0px;
+  padding-left: 50px;
+  width: 100%;
+  height: 80px;
+  background-color: #553900;
+  color: #FFE3AA;
+  position:absolute;
+  font-weight: bold;
 }
-.border-pixel{
+
+.border-soft{
+  border: 3px solid #553900 ;
+  border-radius: 3px;
+}
+.border-soft:hover{
    box-shadow: 
-      
-      -4px 0px 0px 0px #000000,
-      4px 0px 0px 0px #000000,
-      0px -4px 0px 0px #000000,
-      0px 4px 0px 0px #000000;
-}
-
-.block:hover{
-   box-shadow: 
-
-   -4px 0px 0px 0px #000000,
-      4px 0px 0px 0px #000000,
-      0px -4px 0px 0px #000000,
-      0px 4px 0px 0px #000000,
-      5px 5px 50px 0px #c0c0c0,
-      0px -5px 50px 0px #c0c0c0,
-      -5px -5px 50px 0px #c0c0c0,
-      5px 0px 50px 0px #c0c0c0;
+      5px 5px 50px 0px #FBEDD0,
+      0px -5px 50px 0px #FBEDD0,
+      -5px -5px 50px 0px #FBEDD0,
+      5px 0px 50px 0px #FBEDD0;
 
 }
+
+
 .block{
   -webkit-transition: all .3s ease;
      -moz-transition: all .3s ease;
@@ -50,8 +60,8 @@
           
   margin: auto;
   margin-bottom: 50px;
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   background-size: cover;
   background-repeat: no-repeat;
   
@@ -74,8 +84,24 @@
 
 #preview{
   padding: 10px;
-
+  background-color: white;
   border: 2px solid #cecece ;
   min-height: 500px;
   overflow-y: scroll;
 }
+
+#contenthtml{
+  width: 100%;
+  min-height: 500px;
+}
+
+#contentEdit{
+  margin-top: 80px !important;
+  margin: auto;
+  padding-top: 20px;
+  width: 80%;
+  min-width: 500px;
+}
+.margin-bottom-20{margin-bottom: 20px;}
+.margin-10{margin: 10px;}
+.height-50{height: 50px;}
