@@ -43,10 +43,10 @@ html, body{
 }
 .border-soft:hover{
    box-shadow: 
-      5px 5px 10px 0px #bbbbbb,
-      0px -5px 10px 0px #bbbbbb,
-      -5px -5px 10px 0px #bbbbbb,
-      5px 0px 10px 0px #bbbbbb;
+      2px 0px 15px 2px  #cccccc,
+      0px -2px 15px 2px #cccccc,
+      -2px 0px 15px 2px #cccccc,
+      0px 2px 15px 2px #cccccc;
 
 }
 
