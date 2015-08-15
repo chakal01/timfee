@@ -1,11 +1,11 @@
-<div id="title"> 
-	<h1>The Freaking Title</h1>
-</div>
 
 <div id="content">
+	<div id="title">
+		<img src="images/title.png" alt="Title">
+	</div>
 	<div id="images">
 		<% @posts.each do |post| %>
-			<div class="col-sm-4">
+			<div class="col-sm-3">
 				 <a href="post/<%= post.id%>" class="linked">
 				<div class="block border-soft" style="background-image: url('./images/<%=post.folder_hash%>/<%=post.icon.file%>')"></div>
 				</a>
