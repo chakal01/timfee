@@ -10,7 +10,7 @@ require 'securerandom'
 db = YAML.load_file('./config/database.yml')["development"]
 
   ActiveRecord::Base.establish_connection(
-      adapter: 'postgresql',
+      adapter: db["adapter"],
       host: db["host"],
       username: db["username"],
       password: db["password"],
@@ -43,8 +43,6 @@ class App < Sinatra::Base
 
   get '/' do
     @posts = Post.all
-    # @posts = ["first", "P3060006", "P3060007", "P3060010", 
-        # "P3060012", "P4030001", "P4030002", "P4030003"].each_with_index.map { |icon,i| {icon: "#{icon}.jpg", id: i} }
     erb :main
   end
 
@@ -92,13 +90,27 @@ class App < Sinatra::Base
     end
 
     post "/upload" do
-      puts params
       post = Post.find(params[:id])
       format = params['myfile'][:filename].split('.')[1].downcase
-      img = Image.create(titre: params[:titre], post_id: post.id, file: SecureRandom.hex[0..7]+'.'+format)
-      File.open("./app/images/#{post.folder_hash}/#{img.file}", "wb") do |f|
+      img = Image.create(
+        titre: params[:titre],
+        post_id: post.id,
+        file_icon: SecureRandom.hex[0..7]+'.'+format,
+        file_preview: SecureRandom.hex[0..7]+'.'+format,
+        file_normal: SecureRandom.hex[0..7]+'.'+format
+      )
+      File.open("./app/images/#{post.folder_hash}/#{img.file_normal}", "wb") do |f|
         f.write(params['myfile'][:tempfile].read)
       end
+      puts "saved img"
+
+      i = Magick::Image.read("./app/images/#{post.folder_hash}/#{img.file_normal}").first
+      puts "saved img"
+      i.resize_to_fill(100,100).write("./app/images/#{post.folder_hash}/#{img.file_icon}")
+      puts "saved img icon"
+      i.resize_to_fill(350,350).write("./app/images/#{post.folder_hash}/#{img.file_preview}")
+      puts "saved img preview"
+
       redirect '/admin/'+params[:id]
     end
 

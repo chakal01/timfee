@@ -10,4 +10,9 @@ gem 'pg'
 gem 'thin'
 gem 'rake'
 
+
+# sudo apt-get install libmagickwand-dev imagemagick
+gem 'rmagick'
+
+# sudo -u postgres psql
 gem 'passenger'

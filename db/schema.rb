@@ -18,7 +18,9 @@ ActiveRecord::Schema.define(version: 20150616200854) do
 
   create_table "images", force: :cascade do |t|
     t.string   "titre"
-    t.string   "file"
+    t.string   "file_icon"
+    t.string   "file_preview"
+    t.string   "file_normal"
     t.integer  "post_id"
     t.datetime "created_at"
     t.datetime "updated_at"
