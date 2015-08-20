@@ -102,14 +102,10 @@ class App < Sinatra::Base
       File.open("./app/images/#{post.folder_hash}/#{img.file_normal}", "wb") do |f|
         f.write(params['myfile'][:tempfile].read)
       end
-      puts "saved img"
 
       i = Magick::Image.read("./app/images/#{post.folder_hash}/#{img.file_normal}").first
-      puts "saved img"
       i.resize_to_fill(100,100).write("./app/images/#{post.folder_hash}/#{img.file_icon}")
-      puts "saved img icon"
       i.resize_to_fill(350,350).write("./app/images/#{post.folder_hash}/#{img.file_preview}")
-      puts "saved img preview"
 
       redirect '/admin/'+params[:id]
     end
