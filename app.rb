@@ -68,15 +68,12 @@ class App < Sinatra::Base
       erb :admin
     end
 
-    get '/new' do
-      @post = Post.new
-      @form_url = "/admin/new"
-      @titre = "Nouveau post"
-      erb :edit
+    post '/new' do
+      post = Post.create(titre: params[:titre])
+      redirect "/admin/#{post.id}"
     end
 
-    post '/new' do
-      puts params
+    post '/' do
       Post.create(titre: params[:titre], content: params[:content], date: params[:date], 
         icon_id: params[:icon], actif: params[:actif], color: params[:color],views: 0)
       redirect '/admin'

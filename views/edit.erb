@@ -5,6 +5,8 @@
     $("#contenthtml").keyup(function() {
       $("#preview").html( $("#contenthtml").val() );
     });
+
+    $(".jcrop").
   });
   </script>
 
@@ -31,20 +33,6 @@
           <input type='text' name='keywords' value="Not done yet" class="form-control col-sm-12" placeholder="Meta-keywords" readonly="readonly">
       </div>
     </div>
-
-    <!--
-    <% if @form_url != "/admin/new" %>
-      <div class="row">
-        <label class="col-sm-2 control-label" style="margin-top: 5px;">Icon du Post :</label>
-        <div class="col-sm-10">
-          <select name='icon' class="form-control">
-            <%@post.images.each do |img|%>
-              <option value="<%= img.id%>"><%= img.titre%></option>
-            <% end %>
-          </select>
-        </div>
-      </div>
-    <% end %> -->
 
     <div class="row" style="margin-top: 15px; margin-bottom: 15px;">
       <div class="col-sm-6">
@@ -84,7 +72,6 @@
   <% end %>
 
   <hr>
-  <% if @form_url != "/admin/new" %>
   <form method="post" action='/admin/upload' class="form-horizontal" enctype="multipart/form-data" > 
     <div class="row">
       <input type="hidden" name="id" value="<%=@post.id%>">
@@ -100,7 +87,21 @@
     </div>  
   </form>
   <div class="height-50"></div>
-  <% end %>
 
-  <div class="height-50"></div>
+  <hr>
+  <div class="row">
+    <label class="col-sm-2 control-label">Icone</label>
+    <div class="col-sm-6">
+      <input type='file' name='myfile' class="form-control">
+    </div>
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Modifier</button>
+  </div>
+
+
+     <!-- <select name='icon' class="form-control">
+            <%@post.images.each do |img|%>
+              <option value="<%= img.id%>"><%= img.titre%></option>
+            <% end %>
+          </select> -->
+
 </div>
