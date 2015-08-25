@@ -101,11 +101,26 @@ class App < Sinatra::Base
       end
 
       i = Magick::Image.read("./app/images/#{post.folder_hash}/#{img.file_normal}").first
-      i.resize_to_fill(100,100).write("./app/images/#{post.folder_hash}/#{img.file_icon}")
-      i.resize_to_fill(350,350).write("./app/images/#{post.folder_hash}/#{img.file_preview}")
+      i.resize_to_fill(150,150).write("./app/images/#{post.folder_hash}/#{img.file_icon}")
+      i.resize_to_fill(450,450).write("./app/images/#{post.folder_hash}/#{img.file_preview}")
 
       redirect '/admin/'+params[:id]
     end
+
+    post '/icon' do
+      puts params
+      dx, dy, width, height = params[:dx].to_i, params[:dy].to_i, params[:width].to_i, params[:height].to_i
+      post = Post.find(params[:post_id].to_i)
+      img = Image.find(params[:img_id].to_i)
+      i = Magick::Image.read("./app/images/#{post.folder_hash}/#{img.file_normal}").first
+      i.crop(dx, dy, width, height).resize_to_fill(150,150).write("./app/images/#{post.folder_hash}/#{img.file_icon}")
+
+      post.icon = img
+      post.save
+      redirect "/admin/#{post.id}"
+
+    end
+
 
 
     get '/:id/delete' do

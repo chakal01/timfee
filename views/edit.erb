@@ -6,6 +6,47 @@
       $("#preview").html( $("#contenthtml").val() );
     });
 
+    function editCoords(c){
+      $("#dx").val(c.x);
+      $("#dy").val(c.y);
+      $("#width").val(c.w);
+      $("#height").val(c.h)
+    }
+
+    $("#iconBase").Jcrop({
+      aspectRatio: 1,
+      minSize: [100, 100],
+      boxWidth: 800, 
+      boxHeight: 400,
+      onChange: function editCoords(c){
+        //console.log(c.x+","+c.y+","+c.w+","+c.h);
+      }
+    });
+
+    
+    $("#img_id").on('change', function() {
+      var img_file = $("option:selected", this).attr("data-bordel");
+      console.log(img_file)
+
+
+      var img = $("<img id='iconBase' />").attr('src', "../images/<%=@post.folder_hash%>/"+img_file).addClass("margin-auto img-icon")
+      .load(function() {
+        if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
+            console.log('broken image!');
+        } else {
+            $(".jcrop-holder, #iconBase").remove()
+            $(".modal-body").append(img)
+            $("#iconBase").Jcrop({
+              aspectRatio: 1,
+              minSize: [100, 100],
+              boxWidth: 800, 
+              boxHeight: 400,
+              onChange: editCoords
+            });
+        }
+      });
+    });
+
   });
   </script>
 
@@ -19,19 +60,27 @@
 
   <form action="<%= @form_url %>" method='post' class="form-horizontal">
     
-    <div class="row">
-      <label class="col-sm-2 control-label" >Titre</label>
-      <div class ="col-sm-10 margin-bottom-20">
-          <input type='text' name='titre' value="<%=@post.titre%>" class="form-control col-sm-12" placeholder="Titre">
+    <div class="col-sm-9 margin-bottom-20">
+      <div class="row">
+        <label class="col-sm-2 control-label" >Titre</label>
+        <div class ="col-sm-10 margin-bottom-20">
+            <input type='text' name='titre' value="<%=@post.titre%>" class="form-control col-sm-12" placeholder="Titre">
+        </div>
       </div>
+
+      <div class="row">
+        <label class="col-sm-2 control-label " >Meta-keywords</label>
+        <div class ="col-sm-10 margin-bottom-20">
+            <input type='text' name='keywords' value="Not done yet" class="form-control col-sm-12" placeholder="Meta-keywords" readonly="readonly">
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-3">
+        <img src="<% if @post.icon %>../images/<%=@post.folder_hash%>/<%=@post.icon.file_icon%><% else %>../images/no-image.jpg<%end%>" data-toggle="modal" data-target="#iconModal" title="Modifier l'icône" class="border-soft is-clickable" />      
     </div>
 
-    <div class="row">
-      <label class="col-sm-2 control-label " >Meta-keywords</label>
-      <div class ="col-sm-10 margin-bottom-20">
-          <input type='text' name='keywords' value="Not done yet" class="form-control col-sm-12" placeholder="Meta-keywords" readonly="readonly">
-      </div>
-    </div>
+    <hr>
 
     <div class="row" style="margin-top: 15px; margin-bottom: 15px;">
       <div class="col-sm-6">
@@ -87,20 +136,42 @@
   </form>
   <div class="height-50"></div>
 
-  <hr>
-  <div class="row">
-    <label class="col-sm-2 control-label">Icone</label>
-    <div class="col-sm-6">
-      <input type='file' name='myfile' class="form-control">
-    </div>
-    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Modifier</button>
-  </div>
+  
 
-
-     <!-- <select name='icon' class="form-control">
+<!-- Modal de modification de l'icone-->
+<div class="modal fade" id="iconModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Changer l'icône du post</h4>
+      </div>
+      <form action="/admin/icon" method='post' class="form-horizontal">
+        <input type="hidden" id="dx" name="dx" value="0"/>
+        <input type="hidden" id="dy" name="dy" value="0"/>
+        <input type="hidden" id="width" name="width" value="100"/>
+        <input type="hidden" id="height" name="height" value="100"/>
+        <input type="hidden" name="post_id" value="<%=@post.id%>"/>
+        <div class="modal-body text-center">
+          <select id="img_id" name="img_id" class="form-control">
             <%@post.images.each do |img|%>
-              <option value="<%= img.id%>"><%= img.titre%></option>
+              <option value="<%= img.id%>" data-bordel="<%=img.file_normal%>" ><%= img.titre%></option>
             <% end %>
-          </select> -->
+          </select>
+          <img id="iconBase" class="margin-auto img-icon" src="../images/<%=@post.folder_hash%>/<%=@post.images[0].file_normal%>">
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-primary">Valider</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+
+     <!--  -->
 
 </div>
