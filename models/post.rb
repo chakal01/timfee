@@ -2,7 +2,7 @@ require 'securerandom'
 require 'fileutils'
 
 class Post < ActiveRecord::Base
-  has_many :images
+  has_many :images, dependent: :destroy
   belongs_to :icon, class_name: 'Image', foreign_key: :icon_id
   before_create :set_folder_hash
   after_create :create_folder
