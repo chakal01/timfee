@@ -1,12 +1,12 @@
 
-<div id="content">
+<div id="content" class="generica">
 	<div id="title">
 		<img src="images/title.png" alt="Title">
 	</div>
 	<div id="images">
 		<% @posts.each do |post| %>
 			<div class="col-sm-3">
-				<a href="post/<%= post.id%>" class="linked">
+				<a href="/<%= post.id%>" class="linked">
 				<% if post.icon %> 
 				<div class="block border-soft shadow-hover" style="background-image: url('./images/<%=post.folder_hash%>/<%=post.icon.file_icon%>')"></div>
 				<% else %>

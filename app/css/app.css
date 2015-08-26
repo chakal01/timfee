@@ -1,8 +1,23 @@
+@font-face {
+    font-family: Generica;
+    src: url(../font/generica.otf);
+}
+@font-face {
+    font-family: Generica;
+    src: url(../font/generica-bold.otf);
+    font-weight: bold;
+}
+
 html, body{
   background: url('../images/bg.png');
   height: 100%;
   font-family: Verdana !important;
   font-size: 12px;
+}
+
+.generica{
+  font-family: Generica !important;
+  font-size: 14px;
 }
 
 #content{
@@ -19,11 +34,8 @@ html, body{
   text-align: center;
 }
 .jcrop-holder{
-
   margin: auto;
   margin-top: 10px;
-  border: 2px solid black;
-  border-radius: 3px;
 }
 .jcrop-keymgr{
   display: none;

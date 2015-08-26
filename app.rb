@@ -25,9 +25,10 @@ class App < Sinatra::Base
   set :root, File.dirname(__FILE__)
 
   assets do
-    serve '/images', from: 'app/images' 
+    serve '/images', from: 'app/images'
     serve '/css', from: 'app/css'
     serve '/js', from: 'app/js'
+    serve '/font', from: 'app/font'
     js_compression :jsmin
     css_compression :sass
   end
@@ -42,15 +43,11 @@ class App < Sinatra::Base
   end
 
   get '/' do
-    @posts = Post.all
+    @posts = Post.where(actif: true)
     erb :main
   end
 
-  get '/post/:id' do
-    @post = Post.find(params[:id])
-    redirect '/' if @post.nil?
-    erb :page
-  end
+  
 
 
   # ============ admin section
@@ -70,6 +67,10 @@ class App < Sinatra::Base
 
     post '/new' do
       post = Post.create(titre: params[:titre])
+      puts "ici"
+      puts params
+      puts post
+      puts post.id
       redirect "/admin/#{post.id}"
     end
 
@@ -84,6 +85,19 @@ class App < Sinatra::Base
       @form_url = "/admin/#{params[:id]}"
       @titre = "Editer #{@post.titre}"
       erb :edit
+    end
+
+    get '/:id/show' do
+      @post = Post.find(params[:id])
+      redirect '/admin' if @post.nil?
+      erb :page
+    end
+
+    get '/:id/toggle' do
+      @post = Post.find(params[:id])
+      @post.actif = !@post.actif
+      @post.save
+      halt 200
     end
 
     post "/upload" do
@@ -112,21 +126,36 @@ class App < Sinatra::Base
       dx, dy, width, height = params[:dx].to_i, params[:dy].to_i, params[:width].to_i, params[:height].to_i
       post = Post.find(params[:post_id].to_i)
       img = Image.find(params[:img_id].to_i)
+      File.delete("./app/images/#{post.folder_hash}/#{img.file_icon}")
+      img.file_icon = SecureRandom.hex[0..7]+'.'+img.file_normal.split('.')[1].downcase
+      img.save
+
       i = Magick::Image.read("./app/images/#{post.folder_hash}/#{img.file_normal}").first
       i.crop(dx, dy, width, height).resize_to_fill(150,150).write("./app/images/#{post.folder_hash}/#{img.file_icon}")
 
       post.icon = img
       post.save
-      redirect "/admin/#{post.id}"
 
+      redirect "/admin/#{post.id}"
     end
 
 
 
-    get '/:id/delete' do
+    get '/post/:id/delete' do
       @post = Post.find(params[:id])
-      @post.delete unless @post.nil?
+      @post.destroy unless @post.nil?
       redirect '/admin'
+    end
+
+    get '/img/:id/delete' do
+      @img = Image.find(params[:id])
+      redirect '/admin' if @img.nil?
+      if @img.post.icon_id == @img.id
+        @img.post.icon_id = nil
+        @img.post.save
+      end
+      @img.destroy
+      redirect "/admin/#{@img.post.id}"
     end
 
     post '/:id' do
@@ -139,5 +168,14 @@ class App < Sinatra::Base
     end
 
   end
+
+  get '/:id' do
+    @post = Post.find(params[:id])
+    redirect '/' if @post.nil? or !@post.actif
+    @post.views += 1
+    @post.save
+    erb :page
+  end
+
 
 end

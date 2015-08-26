@@ -4,31 +4,46 @@
 
 <div id="content">
 
+<script>
+  $(document).ready(function(){
+    $(".switch-actif").click(function(){
+      var thus = this
+      $.ajax({
+        url: "/admin/"+this.id+"/toggle",
+      }).done(function() {
+        $( thus ).toggleClass( "glyphicon-check");
+        $( thus ).toggleClass( "glyphicon-unchecked" );
+      });
+    });
+  });
+
+</script>
 <table class="table">
     <thead>
         <th>Titre</th>
-        <th></th>
-        <th></th>
+        <th title="Active tes posts pour les rendres visible aux visiteurs.">Actif</th>
+        <th>Action</th>
+        <th>Vues</th>
     </thead>
     <tbody>
       <% @posts.each do |post| %>
         <tr>
         <td><%= post.titre %></td>
-        <td><%= post.actif %></td>
-        <td style="text-align: center">
-          <a href="/admin/<%= post.id%>">
+        <td>
+          <span id="<%= post.id%>" class="switch-actif glyphicon <%= post.actif ? 'glyphicon-check' : 'glyphicon-unchecked' %> is-clickable"></span>
+        </td>
+        <td>
+          <a href="/admin/<%= post.id%>" class="btn">
             <span class="glyphicon glyphicon-pencil" title="Editer"></span>
           </a>
-          <a href="/post/<%= post.id%>">
+          <a href="/admin/<%= post.id%>/show" class="btn">
             <span class="glyphicon glyphicon-eye-open" title="Voir"></span>
           </a>
-          <a href="#">
-            <span class="glyphicon glyphicon-trash" title="Supprimer"></span>
+          <a href="/admin/post/<%= post.id%>/delete" title="Supprimer" onclick="return confirm('Es-tu sûr de vouloir supprimer ce post ?');">
+            <span class="glyphicon glyphicon-trash btn"></span>
           </a>
-          <!-- <a href="/admin/<%= post.id%>/delete" title="Supprimer" data-confirm= 'Are you sure?'>
-            <span class="glyphicon glyphicon-trash"></span>
-          </a> -->
         </td>
+        <td><%= post.views %></td>
       <% end %>
     </tbody>
 </table>
