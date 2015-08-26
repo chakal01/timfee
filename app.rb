@@ -81,27 +81,27 @@ class App < Sinatra::Base
     end
 
     get '/:id' do
-      @post = Post.find(params[:id])
+      @post = Post.find_by(id: params[:id])
       @form_url = "/admin/#{params[:id]}"
       @titre = "Editer #{@post.titre}"
       erb :edit
     end
 
     get '/:id/show' do
-      @post = Post.find(params[:id])
+      @post = Post.find_by(id: params[:id])
       redirect '/admin' if @post.nil?
       erb :page
     end
 
     get '/:id/toggle' do
-      @post = Post.find(params[:id])
+      @post = Post.find_by(id: params[:id])
       @post.actif = !@post.actif
       @post.save
       halt 200
     end
 
     post "/upload" do
-      post = Post.find(params[:id])
+      post = Post.find_by(id: params[:id])
       format = params['myfile'][:filename].split('.')[1].downcase
       img = Image.create(
         titre: params[:titre],
@@ -124,8 +124,8 @@ class App < Sinatra::Base
     post '/icon' do
       puts params
       dx, dy, width, height = params[:dx].to_i, params[:dy].to_i, params[:width].to_i, params[:height].to_i
-      post = Post.find(params[:post_id].to_i)
-      img = Image.find(params[:img_id].to_i)
+      post = Post.find_by(id: params[:post_id].to_i)
+      img = Image.find_by(id: params[:img_id].to_i)
       File.delete("./app/images/#{post.folder_hash}/#{img.file_icon}")
       img.file_icon = SecureRandom.hex[0..7]+'.'+img.file_normal.split('.')[1].downcase
       img.save
@@ -142,13 +142,13 @@ class App < Sinatra::Base
 
 
     get '/post/:id/delete' do
-      @post = Post.find(params[:id])
+      @post = Post.find_by(id: params[:id])
       @post.destroy unless @post.nil?
       redirect '/admin'
     end
 
     get '/img/:id/delete' do
-      @img = Image.find(params[:id])
+      @img = Image.find_by(id: params[:id])
       redirect '/admin' if @img.nil?
       if @img.post.icon_id == @img.id
         @img.post.icon_id = nil
@@ -159,7 +159,7 @@ class App < Sinatra::Base
     end
 
     post '/:id' do
-      @post = Post.find(params[:id])
+      @post = Post.find_by(id: params[:id])
       @post.update_attributes(
         titre: params[:titre], content: params[:content], date: params[:date], 
         icon_id: params[:icon], actif: params[:actif], color: params[:color]
@@ -170,9 +170,15 @@ class App < Sinatra::Base
   end
 
   get '/:id' do
-    @post = Post.find(params[:id])
+    @post = Post.find_by(id: params[:id])
     redirect '/' if @post.nil? or !@post.actif
-    @post.views += 1
+
+
+    if @post.views.nil?
+      @post.views = 0
+    else
+      @post.view += 1
+    end
     @post.save
     erb :page
   end

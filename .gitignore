@@ -1,6 +1,7 @@
 Gemfile.lock
 /tmp
 /public
+/log
 config/database.yml
 db/schema.rb
 /app/images/**/*.*
