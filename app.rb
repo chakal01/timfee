@@ -6,6 +6,7 @@ require './models/post'
 require './models/image'
 require './helpers/auth_helper'
 require 'securerandom'
+require 'logger'
 
 db = YAML.load_file('./config/database.yml')["development"]
 
@@ -22,6 +23,12 @@ class App < Sinatra::Base
   register Sinatra::AssetPack
   register Sinatra::Namespace
   
+  ::Logger.class_eval { alias :write :'<<' }
+  access_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','access.log')
+  access_logger = ::Logger.new(access_log)
+  error_logger = ::File.new(::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','error.log'),"a+")
+  error_logger.sync = true
+
   set :root, File.dirname(__FILE__)
 
   assets do
@@ -33,9 +40,13 @@ class App < Sinatra::Base
     css_compression :sass
   end
 
+  configure do
+    use ::Rack::CommonLogger, access_logger
+  end
 
   before do
-    @title = "Petites pensées ridicules..."
+    @title = "Copeaux d'aronde"
+    env["rack.errors"] = error_logger
   end
 
   def h(text)
@@ -177,7 +188,7 @@ class App < Sinatra::Base
     if @post.views.nil?
       @post.views = 0
     else
-      @post.view += 1
+      @post.views += 1
     end
     @post.save
     erb :page

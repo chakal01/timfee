@@ -9,7 +9,7 @@ gem 'sinatra-contrib'
 gem 'pg'
 gem 'thin'
 gem 'rake'
-
+gem 'logger'
 
 # sudo apt-get install libmagickwand-dev imagemagick
 gem 'rmagick'
