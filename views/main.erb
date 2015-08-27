@@ -8,9 +8,9 @@
 			<div class="col-sm-3">
 				<a href="/<%= post.id%>" class="linked">
 				<% if post.icon %> 
-				<div class="block border-soft shadow-hover" style="background-image: url('./images/<%=post.folder_hash%>/<%=post.icon.file_icon%>')"></div>
+				<div class="block border-soft shadow-hover" style="background-image: url('/images/<%=post.folder_hash%>/<%=post.icon.file_icon%>')"></div>
 				<% else %>
-				<div class="block border-soft shadow-hover" style="background-image: url('./images/no-image.jpg')"></div>
+				<div class="block border-soft shadow-hover" style="background-image: url('/images/no-image.jpg')"></div>
 				<% end %>
 				</a>
 			</div>

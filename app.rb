@@ -23,11 +23,11 @@ class App < Sinatra::Base
   register Sinatra::AssetPack
   register Sinatra::Namespace
   
-  ::Logger.class_eval { alias :write :'<<' }
-  access_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','access.log')
-  access_logger = ::Logger.new(access_log)
-  error_logger = ::File.new(::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','error.log'),"a+")
-  error_logger.sync = true
+  # ::Logger.class_eval { alias :write :'<<' }
+  # access_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','access.log')
+  # access_logger = ::Logger.new(access_log)
+  # error_logger = ::File.new(::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','error.log'),"a+")
+  # error_logger.sync = true
 
   set :root, File.dirname(__FILE__)
 
@@ -40,13 +40,13 @@ class App < Sinatra::Base
     css_compression :sass
   end
 
-  configure do
-    use ::Rack::CommonLogger, access_logger
-  end
+  # configure do
+  #   use ::Rack::CommonLogger, access_logger
+  # end
 
   before do
     @title = "Copeaux d'aronde"
-    env["rack.errors"] = error_logger
+    #env["rack.errors"] = error_logger
   end
 
   def h(text)
@@ -144,7 +144,7 @@ class App < Sinatra::Base
       i = Magick::Image.read("./app/images/#{post.folder_hash}/#{img.file_normal}").first
       i.crop(dx, dy, width, height).resize_to_fill(150,150).write("./app/images/#{post.folder_hash}/#{img.file_icon}")
 
-      post.icon = img
+      post.icon_id = img.id
       post.save
 
       redirect "/admin/#{post.id}"
