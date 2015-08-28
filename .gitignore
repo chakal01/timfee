@@ -3,6 +3,7 @@ Gemfile.lock
 /public
 /log
 config/database.yml
+config/application.yml
 db/schema.rb
 /app/images/**/*.*
 !/app/images/bg.png

@@ -1,3 +1,4 @@
+require 'yaml'
 module AuthHelper
 
   def protected!
@@ -7,8 +8,9 @@ module AuthHelper
   end
 
   def authorized?
+  	config = YAML.load_file('./config/application.yml')
     @auth ||=  Rack::Auth::Basic::Request.new(request.env)
-    @auth.provided? and @auth.basic? and @auth.credentials and @auth.credentials == ['tim', 'tim']
+    @auth.provided? and @auth.basic? and @auth.credentials and @auth.credentials == [config['user'], config['password']]
   end
   
 end

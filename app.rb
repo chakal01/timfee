@@ -23,11 +23,15 @@ class App < Sinatra::Base
   register Sinatra::AssetPack
   register Sinatra::Namespace
   
-  # ::Logger.class_eval { alias :write :'<<' }
-  # access_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','access.log')
-  # access_logger = ::Logger.new(access_log)
-  # error_logger = ::File.new(::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','error.log'),"a+")
-  # error_logger.sync = true
+  config = YAML.load_file('./config/application.yml')
+
+  if config["file_logger"]
+    ::Logger.class_eval { alias :write :'<<' }
+    access_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','access.log')
+    access_logger = ::Logger.new(access_log)
+    error_logger = ::File.new(::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','error.log'),"a+")
+    error_logger.sync = true
+  end
 
   set :root, File.dirname(__FILE__)
 
@@ -40,13 +44,17 @@ class App < Sinatra::Base
     css_compression :sass
   end
 
-  # configure do
-  #   use ::Rack::CommonLogger, access_logger
-  # end
+  configure do
+    if config["file_logger"]
+      use ::Rack::CommonLogger, access_logger
+    end
+  end
 
   before do
     @title = "Copeaux d'aronde"
-    #env["rack.errors"] = error_logger
+    if config["file_logger"]
+      env["rack.errors"] = error_logger
+    end
   end
 
   def h(text)
