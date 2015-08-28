@@ -158,6 +158,15 @@ class App < Sinatra::Base
       redirect '/admin'
     end
 
+    post '/img/:id' do
+      puts params
+      @img = Image.find_by(id: params[:id])
+      halt 400 if @img.nil?
+      @img.titre = params[:titre]
+      @img.save
+      halt 200
+    end
+
     get '/img/:id/delete' do
       @img = Image.find_by(id: params[:id])
       redirect '/admin' if @img.nil?
@@ -171,11 +180,11 @@ class App < Sinatra::Base
 
     post '/:id' do
       @post = Post.find_by(id: params[:id])
-      @post.update_attributes(
-        titre: params[:titre], content: params[:content], date: params[:date], 
-        icon_id: params[:icon], actif: params[:actif], color: params[:color]
-        ) unless @post.nil?
-      redirect '/admin'
+      redirect '/admin' if @post.nil?
+      @post.titre = params[:titre] if params[:titre]
+      @post.content = params[:content] if params[:content]
+      @post.save
+      redirect "/admin/#{@post.id}"
     end
 
   end

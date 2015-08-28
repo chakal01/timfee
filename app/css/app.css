@@ -96,6 +96,8 @@ hr {
 
 #preview{
   padding: 10px;
+}
+#previewhtml{
   background-color: white;
   border: 2px solid #cecece ;
   min-height: 500px;
@@ -116,11 +118,14 @@ hr {
 .margin-bottom-20{margin-bottom: 20px;}
 .margin-10{margin: 10px;}
 .margin-top-15{margin-top: 15px;}
+.margin-top-5{margin-top: 5px;}
+.margin-bottom-15{margin-bottom: 15px;}
 .height-50{height: 50px; clear: both;}
 
 .float-left{float: left;}
 .float-right{float: right;}
 .width-650{width: 650px;}
+.width-565{width: 565px;}
 .border-right-10{border-right: 30px solid transparent;}
 .border-left-10 {border-left: 30px solid transparent;}
 .width-50p{width: 50%;}
@@ -132,9 +137,10 @@ hr {
 
 .padding-right-10{padding-right: 10px;}
 .padding-left-10{padding-left: 10px;} 
-
-.btn-default{color: #337AB7;}
-
+.display-inline{display: inline;}
+.display-none{display: none;}
+.btn-default span{color: #337AB7;}
+.margin-left-10{margin-left: 10px;} 
 .galerie-row{
   margin-top: 20px;
   height: 150px;

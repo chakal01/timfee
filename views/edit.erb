@@ -1,9 +1,9 @@
 <script>
   $(document).ready(function(){
-    $("#preview").html( $("#contenthtml").val() );
+    $("#previewhtml").html( $("#contenthtml").val() );
 
     $("#contenthtml").keyup(function() {
-      $("#preview").html( $("#contenthtml").val() );
+      $("#previewhtml").html( $("#contenthtml").val() );
     });
 
     function editCoords(c){
@@ -40,6 +40,19 @@
       });
     });
 
+    $(".editTitleImage").click(function(){
+      id = $(this).attr("name")
+      if (!$("#titre_"+id).attr("readonly")){
+        $.ajax({
+          type: "POST",
+          url: "/admin/img/"+id,
+          data: {titre: $("#titre_"+id).val()}
+        })
+      }
+      $(".editTitleImage span").toggleClass("display-none");
+      $("#titre_"+id).attr('readonly', !$("#titre_"+id).attr('readonly'));
+    });
+
   });
   </script>
 
@@ -50,52 +63,58 @@
 
 <div id="contentEdit">
 
-  <form action="<%= @form_url %>" method='post' class="form-horizontal">
-    
-    <div class="float-left height-150 width-650 border-right-10">
-      <div class="row">
-        <div class="form-group">
-          <label class="col-sm-3 control-label" >Titre</label>
-          <div class ="col-sm-9 margin-bottom-20">
-              <input type='text' name='titre' value="<%=@post.titre%>" class="form-control col-sm-12" placeholder="Titre">
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="form-group">
-          <label class="col-sm-3 control-label " >Meta-keywords</label>
-          <div class ="col-sm-9 margin-bottom-20">
-              <input type='text' name='keywords' value="Not done yet" class="form-control col-sm-12" placeholder="Meta-keywords" readonly="readonly">
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="float-right square-150 border-soft is-clickable" data-toggle="modal" data-target="#iconModal" title="Modifier l'icône" style="background-image: url('/images/<%=@post.folder_hash%>/<%=@post.icon.file_icon%>')">
-    </div>
-
-    <div class="height-50"></div>
-
-
     <div>
-
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Contenu</a></li>
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Paramètres</a></li>
+        <li role="presentation"><a href="#content" aria-controls="content" role="tab" data-toggle="tab">Contenu</a></li>
         <li role="presentation"><a href="#galerie" aria-controls="galerie" role="tab" data-toggle="tab">Galerie</a></li>
         <li role="presentation"><a href="#preview" aria-controls="preview" role="tab" data-toggle="tab">Preview</a></li>
       </ul>
 
       <!-- Tab panes -->
       <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="home">
-          <textarea type='text' id="contenthtml" name='content' rows="20" class="form-control">
-            <%=@post.content%> 
-          </textarea>
+        
+        <div role="tabpanel" id="home" class="tab-pane active margin-top-15">
+
+          <form action="<%= @form_url %>" method='post' class="form-horizontal">
+            <div class="float-left height-150 width-650 border-right-10">
+              <div class="row">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label" >Titre</label>
+                  <div class ="col-sm-9 margin-bottom-20">
+                      <input type='text' name='titre' value="<%=@post.titre%>" class="form-control col-sm-12" placeholder="Titre">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label " >Meta-keywords</label>
+                  <div class ="col-sm-9 margin-bottom-20">
+                      <input type='text' name='keywords' value="Not done yet" class="form-control col-sm-12" placeholder="Meta-keywords" readonly="readonly">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="float-right square-150 border-soft is-clickable" data-toggle="modal" data-target="#iconModal" title="Modifier l'icône" style="background-image: url('/images/<% if @post.icon %><%=@post.folder_hash%>/<%=@post.icon.file_icon%><%else%>no-image.jpg<%end%>')">
+            </div>
+
+            <button type="submit" class="btn btn-default col-sm-12 margin-top-15">Sauver</button>
+          </form>
         </div>
-        <div role="tabpanel" id="preview" class="preview generica tab-pane">
+
+        <div role="tabpanel" id="content" class="tab-pane" >
+          <form action="<%= @form_url %>" method='post' class="form-horizontal">
+            <textarea type='text' id="contenthtml" name='content' rows="20" class="form-control"><%=@post.content%></textarea>
+            <button type="submit" class="btn btn-default col-sm-12 margin-top-5 margin-bottom-15">Sauver</button>
+          </form>
+        </div>
+        
+        <div role="tabpanel" id="preview" class="preview tab-pane">
+          <div id="previewhtml" class=" generica"></div>
         </div>
 
         <div role="tabpanel" id="galerie" class="tab-pane">
@@ -104,12 +123,15 @@
               <div class="float-left square-150 border-soft" style="background-image: url('/images/<%=img.post.folder_hash%>/<%=img.file_preview%>');background-size: 150px;"></div>
 
               <div class="float-right height-150 width-650 border-left-10">
-                <input type="text" value="<%= img.titre %>" class="form-control"/>
+                <input type="text" id="titre_<%= img.id%>" value="<%= img.titre %>" class="form-control width-565 display-inline" readonly="readonly"/>
+                <a class="btn btn-default editTitleImage margin-left-10" name="<%= img.id%>" style="margin-top: -2px;">
+                  <span class="glyphicon glyphicon-floppy-disk display-none"></span>
+                  <span class="glyphicon glyphicon-pencil"></span>
+                </a>
                 <input type="text" value='<img src="/images/<%=@post.folder_hash%>/<%=img.file_preview%>" alt="<%=img.titre%>"/>' class="form-control margin-top-15" readonly="readonly" />
                 <a href="/admin/img/<%= img.id %>/delete" title="Supprimer" onclick="return confirm('Es-tu sûr de vouloir supprimer cette image ?');" class="btn btn-default margin-top-15">
                   <span class="glyphicon glyphicon-trash"></span>
                 </a>
-
               </div>
 
             </div>
@@ -135,76 +157,10 @@
 
     </div>
 
-    <hr>
-    <hr>
+    <div class="height-50"></div>
 
-    <div class="col-sm-9">
-      
+</div>
 
-    </div>
-    <div class="col-sm-3 margin-bottom-20">
-        <img src="<% if @post.icon %>/images/<%=@post.folder_hash%>/<%=@post.icon.file_icon%><% else %>/images/no-image.jpg<%end%>" data-toggle="modal" data-target="#iconModal" title="Modifier l'icône" class="border-soft is-clickable" />      
-    </div>
-
-    <hr>
-
-    <div class="row" style="margin-top: 15px; margin-bottom: 15px;">
-      <div class="col-sm-6">
-        <textarea type='text' id="contenthtml" name='content' rows="20" class="form-control">
-          <%=@post.content%> 
-        </textarea>
-      </div>
-      <div class="col-sm-6">
-        <div id="preview" class="preview generica" ></div>
-      </div>
-    </div>
-    
-    <div class="row">
-      <button type="submit" class="btn btn-default" style="margin: auto; width: 97%;">Valider</button>
-    </div>
-
-  </form>
-
-  <hr>
-  <div class="row">
-    <h3>Galerie d'images</h3>
-  </div>
-
-  <%@post.images.each do |img|%>
-    <div class="row margin-top-15">
-      <div class ="col-sm-2">
-        <div class="block border-soft" style="background-image: url('/images/<%=img.post.folder_hash%>/<%=img.file_preview%>')"></div>
-      </div>
-      <div class ="col-sm-9">
-        <input type="text" value="<%= img.titre %>" class="form-control"/>
-        <input type="text" value='<img src="/images/<%=@post.folder_hash%>/<%=img.file_preview%>" alt="<%=img.titre%>"/>' class="form-control margin-top-15" readonly="readonly" />
-      </div>
-      <div class ="col-sm-1">
-        <a href="/admin/img/<%= img.id %>/delete" title="Supprimer" onclick="return confirm('Es-tu sûr de vouloir supprimer cette image ?');">
-          <span class="glyphicon glyphicon-trash btn"></span>
-        </a>
-      </div>
-    </div>
-  <% end %>
-
-  <hr>
-  <form method="post" action='/admin/upload' class="form-horizontal" enctype="multipart/form-data" > 
-    <div class="row">
-      <input type="hidden" name="id" value="<%=@post.id%>">
-      <div class="col-sm-6">
-        <input type='file' name='myfile' class="form-control">
-      </div>
-      <div class="col-sm-4">
-        <input type='text' name='titre' placeholder="Titre" class="form-control" placeholder="Titre">
-      </div>
-      <div class="col-sm-2">
-        <button type="submit" class="btn btn-default col-sm-12">Upload</button>
-      </div>
-    </div>  
-  </form>
-  <div class="height-50"></div>
-
-  
 
 <!-- Modal de modification de l'icone-->
 <div class="modal fade" id="iconModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -243,9 +199,4 @@
       </form>
     </div>
   </div>
-</div>
-
-
-     <!--  -->
-
 </div>
