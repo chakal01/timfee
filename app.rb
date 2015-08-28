@@ -78,10 +78,6 @@ class App < Sinatra::Base
 
     post '/new' do
       post = Post.create(titre: params[:titre])
-      puts "ici"
-      puts params
-      puts post
-      puts post.id
       redirect "/admin/#{post.id}"
     end
 
@@ -133,7 +129,6 @@ class App < Sinatra::Base
     end
 
     post '/icon' do
-      puts params
       dx, dy, width, height = params[:dx].to_i, params[:dy].to_i, params[:width].to_i, params[:height].to_i
       post = Post.find_by(id: params[:post_id].to_i)
       img = Image.find_by(id: params[:img_id].to_i)
@@ -159,7 +154,6 @@ class App < Sinatra::Base
     end
 
     post '/img/:id' do
-      puts params
       @img = Image.find_by(id: params[:id])
       halt 400 if @img.nil?
       @img.titre = params[:titre]
