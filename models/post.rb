@@ -6,6 +6,7 @@ class Post < ActiveRecord::Base
   belongs_to :icon, class_name: 'Image', foreign_key: :icon_id
   before_create :set_folder_hash
   after_create :create_folder
+  before_destroy :delete_images_folder
 	def day
     mois = case self.date.strftime("%B")
     when "January"
@@ -50,6 +51,10 @@ class Post < ActiveRecord::Base
       unless File.directory?(path)
         FileUtils.mkpath(path)
       end
+    end
+
+    def delete_images_folder
+      FileUtils.rm_rf("./app/images/#{self.folder_hash}")
     end
 
 end
