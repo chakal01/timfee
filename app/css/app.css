@@ -1,10 +1,10 @@
 @font-face {
     font-family: Generica;
-    src: url(../font/generica.otf);
+    src: url(/font/generica.otf);
 }
 @font-face {
     font-family: Generica;
-    src: url(../font/generica-bold.otf);
+    src: url(/font/generica-bold.otf);
     font-weight: bold;
 }
 
@@ -17,7 +17,7 @@ html, body{
 
 .generica{
   font-family: Generica !important;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 #content{
@@ -96,12 +96,6 @@ hr {
 
 #preview{
   padding: 10px;
-}
-#previewhtml{
-  background-color: white;
-  border: 2px solid #cecece ;
-  min-height: 500px;
-  overflow-y: scroll;
 }
 
 #contenthtml{

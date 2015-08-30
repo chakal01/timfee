@@ -40,6 +40,7 @@ class App < Sinatra::Base
     serve '/css', from: 'app/css'
     serve '/js', from: 'app/js'
     serve '/font', from: 'app/font'
+    serve '/markitup', from: 'app/markitup'
     js_compression :jsmin
     css_compression :sass
   end
