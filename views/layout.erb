@@ -2,6 +2,9 @@
 <html>
 <head>
   <title>Copeaux d'Aronde</title>
+  <% if @meta_description %><meta name="description" content="<%= @meta_description%>"><% end %> 
+  <meta name="keywords" content="<%=@meta_keywords%>">
+  <meta name="author" content="Timothée Delay">
   <script src="/js/jquery-1.11.2.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
   <script src="/js/jquery.Jcrop.min.js"></script>

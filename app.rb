@@ -64,6 +64,8 @@ class App < Sinatra::Base
 
   get '/' do
     @posts = Post.where(actif: true)
+    # @meta_keywords = "mes metas"
+    # @meta_description = "Ca c'est ton site Tim"
     erb :main
   end
 
@@ -186,6 +188,7 @@ class App < Sinatra::Base
       redirect '/admin' if @post.nil?
       @post.titre = params[:titre] if params[:titre]
       @post.content = params[:content] if params[:content]
+      @post.meta_keywords = params[:meta_keywords] if params[:meta_keywords]
       @post.save
       redirect "/admin/#{@post.id}"
     end
@@ -195,7 +198,7 @@ class App < Sinatra::Base
   get '/:id' do
     @post = Post.find_by(id: params[:id])
     redirect '/' if @post.nil? or !@post.actif
-
+    @meta_keywords = @post.meta_keywords
 
     if @post.views.nil?
       @post.views = 0
