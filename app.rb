@@ -64,8 +64,8 @@ class App < Sinatra::Base
 
   get '/' do
     @posts = Post.where(actif: true)
-    # @meta_keywords = "mes metas"
-    # @meta_description = "Ca c'est ton site Tim"
+    @meta_keywords = "sur mesure multimatériaux mobilier ébénisterie écolo bois naturel sain finitions qualité artisanat d'art"
+    @meta_description = "Mobilier multimatériaux, d'intérieur et d'extérieur, par Timothée Delay."
     erb :main
   end
 

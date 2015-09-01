@@ -55,11 +55,12 @@ html, body{
 .is-clickable{
   cursor: pointer;
 }
-#title{
-  margin-top: 0px;
-  padding-left: 50px;
-  width: 100%;
-  font-weight: bold;
+.title{
+  font-size: 50px;
+}
+.subtitle{
+  font-size: 18px;
+  margin-left: 150px;
 }
 
 .border-soft{

@@ -55,6 +55,7 @@
 
     $('#contenthtml').markItUp(mySettings);
 
+    $(".tbselected").click(function(){ $(this).select(); });
   });
   </script>
 
@@ -135,7 +136,7 @@
                   <span class="glyphicon glyphicon-floppy-disk display-none"></span>
                   <span class="glyphicon glyphicon-pencil"></span>
                 </a>
-                <input type="text" value='<img src="/images/<%=@post.folder_hash%>/<%=img.file_preview%>" alt="<%=img.titre%>"/>' class="form-control margin-top-15" readonly="readonly" />
+                <input type="text" value='<img src="/images/<%=@post.folder_hash%>/<%=img.file_preview%>" alt="<%=img.titre%>"/>' class="form-control margin-top-15 tbselected" readonly="readonly" />
                 <a href="/admin/img/<%= img.id %>/delete" title="Supprimer" onclick="return confirm('Es-tu sûr de vouloir supprimer cette image ?');" class="btn btn-default margin-top-15">
                   <span class="glyphicon glyphicon-trash"></span>
                 </a>
