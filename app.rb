@@ -51,7 +51,8 @@ class App < Sinatra::Base
     js :edit, ['/markitup/jquery.markitup.js', '/markitup/sets/html/set.js', '/js/edit.js', '/js/jquery.Jcrop.min.js']
     css :edit, ['/css/jquery.Jcrop.min.css', '/markitup/skins/simple/style.css', '/markitup/sets/html/style.css']
 
-    js :page, ['/js/page.js']
+    js :page, ['/js/lightgallery.js', '/js/page.js']
+    css :page, ['/css/lightgallery.css']
 
     js_compression :jsmin
     css_compression :sass

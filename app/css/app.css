@@ -1,6 +1,8 @@
 @font-face {
     font-family: Generica;
+
     src: url(/fonts/generica.otf);
+
 }
 @font-face {
     font-family: Generica;
@@ -17,7 +19,7 @@ html, body{
 
 .generica{
   font-family: Generica !important;
-  font-size: 16px;
+  font-size: 14pt;
 }
 
 #content{
@@ -28,7 +30,7 @@ html, body{
   height: 100%;
   padding-left: 20px;
   padding-right: 20px;
-  overflow: hidden;
+  margin-bottom: 50px;
 }
 .text-center{
   text-align: center;
@@ -56,10 +58,10 @@ html, body{
   cursor: pointer;
 }
 .title{
-  font-size: 50px;
+  font-size: 36pt;
 }
 .subtitle{
-  font-size: 18px;
+  font-size: 13pt;
   margin-left: 150px;
 }
 
@@ -93,6 +95,14 @@ hr {
   height: 150px;
   background-size: cover;
   background-repeat: no-repeat;
+}
+
+.item{
+  padding: 20px;
+  float: left;
+}
+.item img{
+  height: 250px;
 }
 
 #preview{
@@ -145,5 +155,5 @@ hr {
   position: absolute;
   top: 30px;
   right: 30px;
-  font-size: 12pt;
+  font-size: 10pt;
 }
