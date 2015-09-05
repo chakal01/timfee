@@ -7,6 +7,7 @@ require './models/image'
 require './helpers/auth_helper'
 require 'securerandom'
 require 'logger'
+require 'sinatra/assetpack'
 
 db = YAML.load_file('./config/database.yml')["development"]
 
@@ -39,8 +40,19 @@ class App < Sinatra::Base
     serve '/images', from: 'app/images'
     serve '/css', from: 'app/css'
     serve '/js', from: 'app/js'
-    serve '/font', from: 'app/font'
+    serve '/fonts', from: 'app/fonts'
     serve '/markitup', from: 'app/markitup'
+
+    js :layout, ['/js/jquery-1.11.2.min.js', '/js/bootstrap.min.js']
+    css :layout, ['/css/bootstrap.min.css', '/css/app.css']
+
+    js :admin, ['/js/admin.js']
+
+    js :edit, ['/markitup/jquery.markitup.js', '/markitup/sets/html/set.js', '/js/edit.js', '/js/jquery.Jcrop.min.js']
+    css :edit, ['/css/jquery.Jcrop.min.css', '/markitup/skins/simple/style.css', '/markitup/sets/html/style.css']
+
+    js :page, ['/js/page.js']
+
     js_compression :jsmin
     css_compression :sass
   end

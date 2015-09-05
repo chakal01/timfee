@@ -1,10 +1,10 @@
 @font-face {
     font-family: Generica;
-    src: url(/font/generica.otf);
+    src: url(/fonts/generica.otf);
 }
 @font-face {
     font-family: Generica;
-    src: url(/font/generica-bold.otf);
+    src: url(/fonts/generica-bold.otf);
     font-weight: bold;
 }
 
@@ -116,7 +116,7 @@ hr {
 .margin-top-5{margin-top: 5px;}
 .margin-bottom-15{margin-bottom: 15px;}
 .height-50{height: 50px; clear: both;}
-
+.margin-left-50{margin-left: 50px;}
 .float-left{float: left;}
 .float-right{float: right;}
 .width-650{width: 650px;}
@@ -143,6 +143,7 @@ hr {
 
 .return{
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 30px;
+  right: 30px;
+  font-size: 12pt;
 }
