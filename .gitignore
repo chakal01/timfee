@@ -9,3 +9,4 @@ db/schema.rb
 !/app/images/bg.png
 !/app/images/title.png
 !/app/images/no-image.jpg
+!/app/images/markitup/*.*
