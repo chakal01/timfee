@@ -42,8 +42,10 @@ class Post < ActiveRecord::Base
   private
     def set_folder_hash
       self.folder_hash = SecureRandom.hex[0..7]
+      self.sha1 = SecureRandom.hex[0..4]
       self.actif = 0
       self.views = 0
+      self.order = Post.count
     end
 
     def create_folder

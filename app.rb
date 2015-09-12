@@ -76,7 +76,7 @@ class App < Sinatra::Base
   end
 
   get '/' do
-    @posts = Post.where(actif: true)
+    @posts = Post.where(actif: true).order(:order)
     @meta_keywords = "sur mesure multimatériaux mobilier ébénisterie écolo bois naturel sain finitions qualité artisanat d'art"
     @meta_description = "Mobilier multimatériaux, d'intérieur et d'extérieur, par Timothée Delay."
     erb :main
@@ -96,13 +96,13 @@ class App < Sinatra::Base
     end
 
     get '' do
-      @posts = Post.all
+      @posts = Post.all.order(:order)
       erb :admin
     end
 
     post '/new' do
       post = Post.create(titre: params[:titre])
-      redirect "/admin/#{post.id}"
+      redirect "/admin/#{post.sha1}"
     end
 
     post '/' do
@@ -112,27 +112,28 @@ class App < Sinatra::Base
     end
 
     get '/:id' do
-      @post = Post.find_by(id: params[:id])
+      @post = Post.find_by(sha1: params[:id])
+      redirect '/' if @post.nil?
       @form_url = "/admin/#{params[:id]}"
       @titre = "Editer #{@post.titre}"
       erb :edit
     end
 
     get '/:id/show' do
-      @post = Post.find_by(id: params[:id])
+      @post = Post.find_by(sha1: params[:id])
       redirect '/admin' if @post.nil?
       erb :page
     end
 
     get '/:id/toggle' do
-      @post = Post.find_by(id: params[:id])
+      @post = Post.find_by(sha1: params[:id])
       @post.actif = !@post.actif
       @post.save
       halt 200
     end
 
     post "/upload" do
-      post = Post.find_by(id: params[:id])
+      post = Post.find_by(sha1: params[:id])
       format = params['myfile'][:filename].split('.')[1].downcase
       img = Image.create(
         titre: params[:titre],
@@ -154,7 +155,7 @@ class App < Sinatra::Base
 
     post '/icon' do
       dx, dy, width, height = params[:dx].to_i, params[:dy].to_i, params[:width].to_i, params[:height].to_i
-      post = Post.find_by(id: params[:post_id].to_i)
+      post = Post.find_by(sha1: params[:post_id].to_i)
       img = Image.find_by(id: params[:img_id].to_i)
       File.delete("./app/images/#{post.folder_hash}/#{img.file_icon}")
       img.file_icon = SecureRandom.hex[0..7]+'.'+img.file_normal.split('.')[1].downcase
@@ -172,7 +173,7 @@ class App < Sinatra::Base
 
 
     get '/post/:id/delete' do
-      @post = Post.find_by(id: params[:id])
+      @post = Post.find_by(sha1: params[:id])
       @post.destroy unless @post.nil?
       redirect '/admin'
     end
@@ -196,20 +197,31 @@ class App < Sinatra::Base
       redirect "/admin/#{@img.post.id}"
     end
 
+    post '/order' do
+      params[:list].each_with_index do |sha1, index|
+        post = Post.find_by(sha1: sha1)
+        post.order = index
+        post.save
+      end
+      halt 200
+    end
+
     post '/:id' do
-      @post = Post.find_by(id: params[:id])
+      @post = Post.find_by(sha1: params[:id])
       redirect '/admin' if @post.nil?
       @post.titre = params[:titre] if params[:titre]
       @post.content = params[:content] if params[:content]
       @post.meta_keywords = params[:meta_keywords] if params[:meta_keywords]
       @post.save
-      redirect "/admin/#{@post.id}"
+      redirect "/admin/#{@post.sha1}"
     end
 
   end
 
+# End of ADMIN section
+
   get '/:id' do
-    @post = Post.find_by(id: params[:id])
+    @post = Post.find_by(sha1: params[:id])
     redirect '/' if @post.nil? or !@post.actif
     @meta_keywords = @post.meta_keywords
 

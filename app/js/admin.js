@@ -20,4 +20,30 @@ $(document).ready(function(){
     
     return false;
   });
+
+  /* Sortable table */
+  /* Return a helper with preserved width of cells */
+  var fixHelper = function(e, ui) {
+    ui.children().each(function() {
+      $(this).width($(this).width());
+    });
+    return ui;
+  };
+
+  $("#sortable tbody").sortable({
+    helper: fixHelper,
+    stop: function(){
+      var list = [];
+      $(".sha1").each(function(elem){
+        list.push($(this).html());
+      });
+      $.ajax({
+        method: 'post',
+        url: "/admin/order",
+        data: {"list": list}
+      });
+    }
+  }).disableSelection();
+
+
 });
