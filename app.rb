@@ -223,6 +223,9 @@ class App < Sinatra::Base
   get '/:id' do
     @post = Post.find_by(sha1: params[:id])
     redirect '/' if @post.nil? or !@post.actif
+
+    @next = @post.order==Post.count-1 ? nil : Post.find_by(order: @post.order+1).sha1
+    @previous = @post.order==0 ? nil : Post.find_by(order: @post.order-1).sha1
     @meta_keywords = @post.meta_keywords
 
     if @post.views.nil?

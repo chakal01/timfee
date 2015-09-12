@@ -6,3 +6,10 @@
 	</div>
 	<%= h @post.content %>
 </div>
+<div class="footer generica">
+	<div id="browser-links">
+		<% if @previous %><a href="/<%= @previous %>" class="previous"><span class="glyphicon glyphicon-chevron-left"></span>Précedent</a><% end %>
+		<a href="/" class="return-to-main">Retour</a>
+		<% if @next %><a href="/<%= @next %>" class="next">Suivant<span class="glyphicon glyphicon-chevron-right"></span></a><% end %>
+	</div>
+</div>

@@ -24,10 +24,8 @@ html, body{
 
 #content{
   padding-top: 20px;
-  width: 65%;
-  min-width: 800px;
+  width: 800px;
   margin: auto;
-  height: 100%;
   padding-left: 20px;
   padding-right: 20px;
   margin-bottom: 50px;
@@ -99,7 +97,6 @@ hr {
 
 .item{
   padding: 20px;
-  float: left;
 }
 .item img{
   height: 250px;
@@ -156,4 +153,23 @@ hr {
   top: 30px;
   right: 30px;
   font-size: 10pt;
+}
+
+.footer{
+  width: 800px;
+  margin: auto;
+  margin-bottom: 50px;
+  text-align: center;
+}
+.footer a{
+  text-decoration: none;
+}
+.previous{
+  margin-right: 20px;
+}
+.return-to-main{
+
+}
+.next{
+  margin-left: 20px;
 }
