@@ -10,3 +10,6 @@ db/schema.rb
 !/app/images/title.png
 !/app/images/no-image.jpg
 !/app/images/markitup/*.*
+Capfile
+config/deploy.rb
+config/deploy/production.rb

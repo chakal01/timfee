@@ -98,8 +98,12 @@ hr {
 .item{
   padding: 20px;
 }
+p.center{
+  text-align: center;
+}
 .item img{
   height: 250px;
+  margin: 20px;
 }
 
 #preview{

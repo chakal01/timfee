@@ -16,3 +16,6 @@ gem 'rmagick'
 
 # sudo -u postgres psql
 gem 'passenger'
+
+gem 'capistrano', '2.15.6'
+gem 'capistrano_colors'

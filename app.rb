@@ -142,32 +142,32 @@ class App < Sinatra::Base
         file_preview: SecureRandom.hex[0..7]+'.'+format,
         file_normal: SecureRandom.hex[0..7]+'.'+format
       )
-      File.open("./app/images/#{post.folder_hash}/#{img.file_normal}", "wb") do |f|
+      File.open("./app/images/posts/#{post.folder_hash}/#{img.file_normal}", "wb") do |f|
         f.write(params['myfile'][:tempfile].read)
       end
 
-      i = Magick::Image.read("./app/images/#{post.folder_hash}/#{img.file_normal}").first
-      i.resize_to_fill(150,150).write("./app/images/#{post.folder_hash}/#{img.file_icon}")
-      i.resize_to_fill(450,450).write("./app/images/#{post.folder_hash}/#{img.file_preview}")
+      i = Magick::Image.read("./app/images/posts/#{post.folder_hash}/#{img.file_normal}").first
+      i.resize_to_fill(150,150).write("./app/images/posts/#{post.folder_hash}/#{img.file_icon}")
+      i.resize_to_fill(450,450).write("./app/images/posts/#{post.folder_hash}/#{img.file_preview}")
 
       redirect '/admin/'+params[:id]
     end
 
     post '/icon' do
       dx, dy, width, height = params[:dx].to_i, params[:dy].to_i, params[:width].to_i, params[:height].to_i
-      post = Post.find_by(sha1: params[:post_id].to_i)
+      post = Post.find_by(sha1: params[:post_id])
       img = Image.find_by(id: params[:img_id].to_i)
-      File.delete("./app/images/#{post.folder_hash}/#{img.file_icon}")
+      File.delete("./app/images/posts/#{post.folder_hash}/#{img.file_icon}")
       img.file_icon = SecureRandom.hex[0..7]+'.'+img.file_normal.split('.')[1].downcase
       img.save
 
-      i = Magick::Image.read("./app/images/#{post.folder_hash}/#{img.file_normal}").first
-      i.crop(dx, dy, width, height).resize_to_fill(150,150).write("./app/images/#{post.folder_hash}/#{img.file_icon}")
+      i = Magick::Image.read("./app/images/posts/#{post.folder_hash}/#{img.file_normal}").first
+      i.crop(dx, dy, width, height).resize_to_fill(150,150).write("./app/images/posts/#{post.folder_hash}/#{img.file_icon}")
 
       post.icon_id = img.id
       post.save
 
-      redirect "/admin/#{post.id}"
+      redirect "/admin/#{post.sha1}"
     end
 
 
