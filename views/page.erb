@@ -4,7 +4,7 @@
 	<div id="title">
 		<h1><%= @post.titre %></h1>
 	</div>
-	<%= h @post.content %>
+	<%= h get_content(@post) %>
 </div>
 <div class="footer generica">
 	<div id="browser-links">

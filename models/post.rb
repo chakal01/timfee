@@ -49,14 +49,14 @@ class Post < ActiveRecord::Base
     end
 
     def create_folder
-      path = "./app/images/#{self.folder_hash}"
+      path = "./app/images/posts/#{self.folder_hash}"
       unless File.directory?(path)
         FileUtils.mkpath(path)
       end
     end
 
     def delete_images_folder
-      FileUtils.rm_rf("./app/images/#{self.folder_hash}")
+      FileUtils.rm_rf("./app/images/posts/#{self.folder_hash}")
     end
 
 end

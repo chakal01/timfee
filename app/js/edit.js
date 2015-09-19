@@ -27,7 +27,7 @@ $(document).ready(function(){
     var img_file = $("option:selected", this).attr("data-bordel");
 
 
-    var img = $("<img id='iconBase' />").attr('src', "/images/<%=@post.folder_hash%>/"+img_file).addClass("margin-auto img-icon")
+    var img = $("<img id='iconBase' />").attr('src', "/images/posts/<%=@post.folder_hash%>/"+img_file).addClass("margin-auto img-icon")
     .load(function() {
       if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
           console.log('broken image!');
@@ -55,4 +55,33 @@ $(document).ready(function(){
   $('#contenthtml').markItUp(mySettings);
 
   $(".tbselected").click(function(){ $(this).select(); });
+
+  /* Order image galery */
+
+  /* Return a helper with preserved width of cells */
+  var fixHelper = function(e, ui) {
+    ui.children().each(function() {
+      $(this).width($(this).width());
+    });
+    return ui;
+  };
+
+  $("#galerie").sortable({
+    helper: fixHelper,
+    handle: $(".sortable-handler"),
+    stop: function(){
+      var list = [];
+      $(".img_id").each(function(elem){
+        list.push($(this).html());
+      });
+      console.log("stop")
+      console.log(list)
+      $.ajax({
+        method: 'post',
+        url: "/admin/orderimg",
+        data: {"list": list}
+      });
+    }
+  }).disableSelection();
+
 });

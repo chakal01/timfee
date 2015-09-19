@@ -32,6 +32,7 @@ $(document).ready(function(){
 
   $("#sortable tbody").sortable({
     helper: fixHelper,
+    handle: ".sortable-handler",
     stop: function(){
       var list = [];
       $(".sha1").each(function(elem){

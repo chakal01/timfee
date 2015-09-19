@@ -4,8 +4,8 @@ class Image < ActiveRecord::Base
 
 	private
 		def delete_files
-			File.delete("./app/images/#{self.post.folder_hash}/#{self.file_icon}")
-			File.delete("./app/images/#{self.post.folder_hash}/#{self.file_preview}")
-			File.delete("./app/images/#{self.post.folder_hash}/#{self.file_normal}")
+			File.delete("./app/images/posts/#{self.post.folder_hash}/#{self.file_icon}")
+			File.delete("./app/images/posts/#{self.post.folder_hash}/#{self.file_preview}")
+			File.delete("./app/images/posts/#{self.post.folder_hash}/#{self.file_normal}")
 		end
 end

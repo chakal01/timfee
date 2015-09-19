@@ -5,6 +5,7 @@ require 'yaml'
 require './models/post'
 require './models/image'
 require './helpers/auth_helper'
+require './helpers/view_helper'
 require 'securerandom'
 require 'logger'
 require 'sinatra/assetpack'
@@ -23,16 +24,17 @@ db = YAML.load_file('./config/database.yml')["development"]
 class App < Sinatra::Base
   register Sinatra::AssetPack
   register Sinatra::Namespace
+  include ViewHelper
   
   config = YAML.load_file('./config/application.yml')
 
-  if config["file_logger"]
-    ::Logger.class_eval { alias :write :'<<' }
-    access_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','access.log')
-    access_logger = ::Logger.new(access_log)
-    error_logger = ::File.new(::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','error.log'),"a+")
-    error_logger.sync = true
-  end
+  # if config["file_logger"]
+  #   ::Logger.class_eval { alias :write :'<<' }
+  #   access_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','access.log')
+  #   access_logger = ::Logger.new(access_log)
+  #   error_logger = ::File.new(::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','error.log'),"a+")
+  #   error_logger.sync = true
+  # end
 
   set :root, File.dirname(__FILE__)
 
@@ -58,18 +60,18 @@ class App < Sinatra::Base
     css_compression :sass
   end
 
-  configure do
-    if config["file_logger"]
-      use ::Rack::CommonLogger, access_logger
-    end
-  end
+  # configure do
+  #   if config["file_logger"]
+  #     use ::Rack::CommonLogger, access_logger
+  #   end
+  # end
 
-  before do
-    @title = "Copeaux d'aronde"
-    if config["file_logger"]
-      env["rack.errors"] = error_logger
-    end
-  end
+  # before do
+  #   @title = "Copeaux d'aronde"
+  #   if config["file_logger"]
+  #     env["rack.errors"] = error_logger
+  #   end
+  # end
 
   def h(text)
     Rack::Utils.unescape(text)
@@ -200,6 +202,16 @@ class App < Sinatra::Base
     post '/order' do
       params[:list].each_with_index do |sha1, index|
         post = Post.find_by(sha1: sha1)
+        post.order = index
+        post.save
+      end
+      halt 200
+    end
+
+    post '/orderimg' do
+      puts params[:list]
+      params[:list].each_with_index do |id, index|
+        post = Image.find_by(id: id)
         post.order = index
         post.save
       end

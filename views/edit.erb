@@ -1,5 +1,6 @@
 <%= css :edit %>
 <%= js :edit %>
+<script src="/js/jquery-ui.min.js"></script>
 
 <a href="/admin" class="return">Retour</a>
 <div class="margin-left-50">
@@ -74,9 +75,13 @@
                   <span class="glyphicon glyphicon-pencil"></span>
                 </a>
                 
-                <input type="text" value='<p class="center"><a class="item" href="/images/posts/<%=@post.folder_hash%>/<%=img.file_normal%>" data-sub-html="<%=img.titre%>"><img src="/images/posts/<%=@post.folder_hash%>/<%=img.file_preview%>" alt="<%=img.titre%>"/></a></p>' class="form-control margin-top-15 tbselected" readonly="readonly" />
+                <input type="text" value='!#<%=img.order+1%>' class="form-control margin-top-15 tbselected" readonly="readonly" />
                 <a href="/admin/img/<%= img.id %>/delete" title="Supprimer" onclick="return confirm('Es-tu sûr de vouloir supprimer cette image ?');" class="btn btn-default margin-top-15">
                   <span class="glyphicon glyphicon-trash"></span>
+                </a>
+                <span class="display-none img_id"><%= img.id %></span>
+                <a class="btn btn-default margin-top-15" title="Trier">
+                  <span class="glyphicon glyphicon-screenshot sortable-handler"></span>
                 </a>
               </div>
 
