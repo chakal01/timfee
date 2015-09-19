@@ -5,11 +5,7 @@ Gemfile.lock
 config/database.yml
 config/application.yml
 db/schema.rb
-/app/images/**/*.*
-!/app/images/bg.png
-!/app/images/title.png
-!/app/images/no-image.jpg
-!/app/images/markitup/*.*
+/app/images/posts/**/*.*
 Capfile
 config/deploy.rb
 config/deploy/production.rb
