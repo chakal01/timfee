@@ -1,15 +1,22 @@
 <%= js :page %>
 <%= css :page %>
-<div id="content" class="generica">
-	<div id="title">
-		<h1><%= @post.titre %></h1>
+
+<div class="centered">
+	<h1 class="title generica">Copeaux d'aronde</h1>
+	<h2 class="subtitle generica">Mobilier multimatériaux, d'intérieur et d'extérieur, par Timothée Delay</h2>
+
+  <div class="height-50"></div>
+	<%= erb(:footer, :collection => @objects) %>
+
+
+	<div class="arial content">
+		<div id="title">
+			<h1><%= @post.titre %></h1>
+		</div>
+		<%= h get_content(@post) %>
 	</div>
-	<%= h get_content(@post) %>
-</div>
-<div class="footer generica">
-	<div id="browser-links">
-		<% if @previous %><a href="/<%= @previous %>" class="previous"><span class="glyphicon glyphicon-chevron-left"></span>Précedent</a><% end %>
-		<a href="/" class="return-to-main">Retour</a>
-		<% if @next %><a href="/<%= @next %>" class="next">Suivant<span class="glyphicon glyphicon-chevron-right"></span></a><% end %>
-	</div>
+
+	<%= erb(:footer, :collection => @objects) %>
+  <div class="height-50"></div>
+
 </div>

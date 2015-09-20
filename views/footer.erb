@@ -1,0 +1,7 @@
+<div class="footer generica">
+	<div id="browser-links">
+		<% if @previous %><a href="/<%= @previous %>" class="previous"><span class="glyphicon glyphicon-chevron-left"></span>Précedent</a><% else %><a class="previous">&nbsp;</a><% end %>
+		<a href="/" class="return-to-main">Menu</a>
+		<% if @next %><a href="/<%= @next %>" class="next">Suivant<span class="glyphicon glyphicon-chevron-right"></span></a><% else %><a class="next">&nbsp;</a><% end %>
+	</div>
+</div>

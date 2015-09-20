@@ -28,13 +28,13 @@ class App < Sinatra::Base
   
   config = YAML.load_file('./config/application.yml')
 
-  # if config["file_logger"]
-  #   ::Logger.class_eval { alias :write :'<<' }
-  #   access_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','access.log')
-  #   access_logger = ::Logger.new(access_log)
-  #   error_logger = ::File.new(::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','error.log'),"a+")
-  #   error_logger.sync = true
-  # end
+  if config["file_logger"]
+    ::Logger.class_eval { alias :write :'<<' }
+    access_log = ::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','access.log')
+    access_logger = ::Logger.new(access_log)
+    error_logger = ::File.new(::File.join(::File.dirname(::File.expand_path(__FILE__)),'log','error.log'),"a+")
+    error_logger.sync = true
+  end
 
   set :root, File.dirname(__FILE__)
 
@@ -60,18 +60,18 @@ class App < Sinatra::Base
     css_compression :sass
   end
 
-  # configure do
-  #   if config["file_logger"]
-  #     use ::Rack::CommonLogger, access_logger
-  #   end
-  # end
+  configure do
+    if config["file_logger"]
+      use ::Rack::CommonLogger, access_logger
+    end
+  end
 
-  # before do
-  #   @title = "Copeaux d'aronde"
-  #   if config["file_logger"]
-  #     env["rack.errors"] = error_logger
-  #   end
-  # end
+  before do
+    @title = "Copeaux d'aronde"
+    if config["file_logger"]
+      env["rack.errors"] = error_logger
+    end
+  end
 
   def h(text)
     Rack::Utils.unescape(text)
@@ -235,9 +235,9 @@ class App < Sinatra::Base
   get '/:id' do
     @post = Post.find_by(sha1: params[:id])
     redirect '/' if @post.nil? or !@post.actif
-
-    @next = @post.order==Post.count-1 ? nil : Post.find_by(order: @post.order+1).sha1
-    @previous = @post.order==0 ? nil : Post.find_by(order: @post.order-1).sha1
+    list = Post.all.where(actif: true).order(:order).pluck(:sha1)
+    @next = list.index(@post.sha1)==list.length-1 ? nil : list[list.index(@post.sha1)+1]
+    @previous = list.index(@post.sha1)==0 ? nil : list[list.index(@post.sha1)-1]
     @meta_keywords = @post.meta_keywords
 
     if @post.views.nil?

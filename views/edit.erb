@@ -3,7 +3,7 @@
 <script src="/js/jquery-ui.min.js"></script>
 
 <a href="/admin" class="return">Retour</a>
-<div class="margin-left-50">
+<div class="margin-left-50 padding-top-20">
   <h1>Edition</h1>
 </div>
 
@@ -52,7 +52,7 @@
           </form>
         </div>
 
-        <div role="tabpanel" id="content" class="tab-pane" >
+        <div role="tabpanel" id="content" class="tab-pane centered" >
           <form action="<%= @form_url %>" method='post' class="form-horizontal">
             <textarea type='text' id="contenthtml" name='content' rows="20" class="form-control"><%=@post.content%></textarea>
             <button type="submit" class="btn btn-default col-sm-12 margin-top-5 margin-bottom-15">Sauver</button>
