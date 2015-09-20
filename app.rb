@@ -116,6 +116,7 @@ class App < Sinatra::Base
     get '/:id' do
       @post = Post.find_by(sha1: params[:id])
       redirect '/' if @post.nil?
+      @tab = params[:tab]||"home"
       @form_url = "/admin/#{params[:id]}"
       @titre = "Editer #{@post.titre}"
       erb :edit
@@ -142,7 +143,8 @@ class App < Sinatra::Base
         post_id: post.id,
         file_icon: SecureRandom.hex[0..7]+'.'+format,
         file_preview: SecureRandom.hex[0..7]+'.'+format,
-        file_normal: SecureRandom.hex[0..7]+'.'+format
+        file_normal: SecureRandom.hex[0..7]+'.'+format,
+        order: post.images.length
       )
       File.open("./app/images/posts/#{post.folder_hash}/#{img.file_normal}", "wb") do |f|
         f.write(params['myfile'][:tempfile].read)
@@ -150,9 +152,9 @@ class App < Sinatra::Base
 
       i = Magick::Image.read("./app/images/posts/#{post.folder_hash}/#{img.file_normal}").first
       i.resize_to_fill(150,150).write("./app/images/posts/#{post.folder_hash}/#{img.file_icon}")
-      i.resize_to_fill(450,450).write("./app/images/posts/#{post.folder_hash}/#{img.file_preview}")
+      i.resize_to_fit(450,450).write("./app/images/posts/#{post.folder_hash}/#{img.file_preview}")
 
-      redirect '/admin/'+params[:id]
+      redirect "/admin/#{params[:id]}?tab=galerie"
     end
 
     post '/icon' do
@@ -196,7 +198,7 @@ class App < Sinatra::Base
         @img.post.save
       end
       @img.destroy
-      redirect "/admin/#{@img.post.id}"
+      redirect "/admin/#{@img.post.sha1}"
     end
 
     post '/order' do

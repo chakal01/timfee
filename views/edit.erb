@@ -12,16 +12,16 @@
     <div>
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Paramètres</a></li>
-        <li role="presentation"><a href="#content" aria-controls="content" role="tab" data-toggle="tab">Contenu</a></li>
-        <li role="presentation"><a href="#galerie" aria-controls="galerie" role="tab" data-toggle="tab">Galerie</a></li>
-        <li role="presentation"><a href="#preview" aria-controls="preview" role="tab" data-toggle="tab">Preview</a></li>
+        <li role="presentation"<% unless ["preview", "content", "galerie"].include? @tab%> class="active"<%end%> ><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Paramètres</a></li>
+        <li role="presentation"<% if @tab=="content"%>  class="active"<%end%> ><a href="#content" aria-controls="content" role="tab" data-toggle="tab">Contenu</a></li>
+        <li role="presentation"<% if @tab=="galerie"%>  class="active"<%end%>><a href="#galerie" aria-controls="galerie" role="tab" data-toggle="tab">Galerie</a></li>
+        <li role="presentation"<% if @tab=="preview"%>  class="active"<%end%>><a href="#preview" aria-controls="preview" role="tab" data-toggle="tab">Preview</a></li>
       </ul>
 
       <!-- Tab panes -->
       <div class="tab-content">
         
-        <div role="tabpanel" id="home" class="tab-pane active margin-top-15">
+        <div role="tabpanel" id="home" class="tab-pane margin-top-15<% unless ["preview", "content", "galerie"].include? @tab%> active<%end%>">
 
           <form action="<%= @form_url %>" method='post' class="form-horizontal">
             <div class="float-left height-150 width-650 border-right-10">
@@ -52,21 +52,21 @@
           </form>
         </div>
 
-        <div role="tabpanel" id="content" class="tab-pane centered" >
+        <div role="tabpanel" id="content" class="tab-pane centered<% if @tab=="content"%> active<%end%>" >
           <form action="<%= @form_url %>" method='post' class="form-horizontal">
             <textarea type='text' id="contenthtml" name='content' rows="20" class="form-control"><%=@post.content%></textarea>
             <button type="submit" class="btn btn-default col-sm-12 margin-top-5 margin-bottom-15">Sauver</button>
           </form>
         </div>
         
-        <div role="tabpanel" id="preview" class="preview tab-pane">
+        <div role="tabpanel" id="preview" class="preview tab-pane<% if @tab=="preview"%> active<%end%>">
           <div id="previewhtml" class=" generica"></div>
         </div>
 
-        <div role="tabpanel" id="galerie" class="tab-pane">
+        <div role="tabpanel" id="galerie" class="tab-pane<% if @tab=="galerie"%> active<%end%>">
           <%@post.images.each do |img|%>
             <div class="galerie-row">
-              <div class="float-left square-150 border-soft" style="background-image: url('/images/posts/<%=img.post.folder_hash%>/<%=img.file_preview%>');background-size: 150px;"></div>
+              <div class="float-left square-150 border-soft" style="background-image: url('/images/posts/<%=img.post.folder_hash%>/<%=img.file_preview%>');background-size: 150px; background-repeat: no-repeat;"></div>
 
               <div class="float-right height-150 width-650 border-left-10">
                 <input type="text" id="titre_<%= img.id%>" value="<%= img.titre %>" class="form-control width-565 display-inline" readonly="readonly"/>
