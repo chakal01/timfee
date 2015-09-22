@@ -94,6 +94,7 @@ class App < Sinatra::Base
     include AuthHelper
 
     before do
+      @title = "Admin Copeaux d'aronde"
       protected!
     end
 
@@ -125,6 +126,7 @@ class App < Sinatra::Base
     get '/:id/show' do
       @post = Post.find_by(sha1: params[:id])
       redirect '/admin' if @post.nil?
+      @return_button = true
       erb :page
     end
 
@@ -137,23 +139,30 @@ class App < Sinatra::Base
 
     post "/upload" do
       post = Post.find_by(sha1: params[:id])
-      format = params['myfile'][:filename].split('.')[1].downcase
-      img = Image.create(
-        titre: params[:titre],
-        post_id: post.id,
-        file_icon: SecureRandom.hex[0..7]+'.'+format,
-        file_preview: SecureRandom.hex[0..7]+'.'+format,
-        file_normal: SecureRandom.hex[0..7]+'.'+format,
-        order: post.images.length
-      )
-      File.open("./app/images/posts/#{post.folder_hash}/#{img.file_normal}", "wb") do |f|
-        f.write(params['myfile'][:tempfile].read)
+
+      order_base = post.images.length
+      params['myfile'].each_with_index do |file, index|
+
+
+        format = file[:filename].split('.')[1].downcase
+        img = Image.create(
+          titre: params[:titre],
+          post_id: post.id,
+          file_icon: SecureRandom.hex[0..7]+'.'+format,
+          file_preview: SecureRandom.hex[0..7]+'.'+format,
+          file_normal: SecureRandom.hex[0..7]+'.'+format,
+          order: order_base+index
+        )
+        File.open("./app/images/posts/#{post.folder_hash}/#{img.file_normal}", "wb") do |f|
+          f.write(file[:tempfile].read)
+        end
+
+        i = Magick::Image.read("./app/images/posts/#{post.folder_hash}/#{img.file_normal}").first
+        i.resize_to_fill(150,150).write("./app/images/posts/#{post.folder_hash}/#{img.file_icon}")
+        i.resize_to_fit(450,450).write("./app/images/posts/#{post.folder_hash}/#{img.file_preview}")
+        i.resize_to_fit(1920,1920).write("./app/images/posts/#{post.folder_hash}/#{img.file_normal}")
+
       end
-
-      i = Magick::Image.read("./app/images/posts/#{post.folder_hash}/#{img.file_normal}").first
-      i.resize_to_fill(150,150).write("./app/images/posts/#{post.folder_hash}/#{img.file_icon}")
-      i.resize_to_fit(450,450).write("./app/images/posts/#{post.folder_hash}/#{img.file_preview}")
-
       redirect "/admin/#{params[:id]}?tab=galerie"
     end
 
@@ -198,7 +207,13 @@ class App < Sinatra::Base
         @img.post.save
       end
       @img.destroy
-      redirect "/admin/#{@img.post.sha1}"
+      # Reorder images
+      @img.post.images.order(:order).map{|img| img.id}.each_with_index do |id, index|
+        img = Image.find_by(id: id)
+        img.order = index
+        img.save
+      end
+      redirect "/admin/#{@img.post.sha1}?tab=galerie"
     end
 
     post '/order' do
@@ -211,11 +226,10 @@ class App < Sinatra::Base
     end
 
     post '/orderimg' do
-      puts params[:list]
       params[:list].each_with_index do |id, index|
-        post = Image.find_by(id: id)
-        post.order = index
-        post.save
+        img = Image.find_by(id: id)
+        img.order = index
+        img.save
       end
       halt 200
     end
@@ -227,7 +241,8 @@ class App < Sinatra::Base
       @post.content = params[:content] if params[:content]
       @post.meta_keywords = params[:meta_keywords] if params[:meta_keywords]
       @post.save
-      redirect "/admin/#{@post.sha1}"
+      redir = params[:redirect].nil? ? "" : "?tab=#{params[:redirect]}"
+      redirect "/admin/#{@post.sha1}#{redir}"
     end
 
   end

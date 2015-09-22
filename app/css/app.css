@@ -169,12 +169,14 @@ p.center{
   right: 30px;
   font-size: 10pt;
 }
+.return2{
+  float: right;
+  right: 20px;
+  margin-top: 14px;
+}
 
 .footer{
   margin: auto;
-  /*margin-top: 20px;
-  margin-bottom: 50px;*//*
-  text-align: center;*/
 }
 .footer a{
   text-decoration: none;
