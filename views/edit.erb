@@ -15,7 +15,7 @@
         <li role="presentation"<% unless ["preview", "content", "galerie"].include? @tab%> class="active"<%end%> ><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Paramètres</a></li>
         <li role="presentation"<% if @tab=="content"%>  class="active"<%end%> ><a href="#content" aria-controls="content" role="tab" data-toggle="tab">Contenu</a></li>
         <li role="presentation"<% if @tab=="galerie"%>  class="active"<%end%>><a href="#galerie" aria-controls="galerie" role="tab" data-toggle="tab">Galerie</a></li>
-        <li role="presentation"<% if @tab=="preview"%>  class="active"<%end%>><a href="#preview" aria-controls="preview" role="tab" data-toggle="tab">Preview</a></li>
+        <li role="presentation"<% if @tab=="preview"%>  class="active"<%end%>><a  href="/admin/<%= @post.sha1%>/show" target="_blank">Preview</a></li>
       </ul>
 
       <!-- Tab panes -->
