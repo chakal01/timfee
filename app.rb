@@ -158,9 +158,23 @@ class App < Sinatra::Base
         end
 
         i = Magick::Image.read("./app/images/posts/#{post.folder_hash}/#{img.file_normal}").first
-        i.resize_to_fill(150,150).write("./app/images/posts/#{post.folder_hash}/#{img.file_icon}")
-        i.resize_to_fit(450,450).write("./app/images/posts/#{post.folder_hash}/#{img.file_preview}")
-        i.resize_to_fit(1920,1920).write("./app/images/posts/#{post.folder_hash}/#{img.file_normal}")
+        width, height = i.columns, i.rows
+        
+        if width > 1920 || height > 1920
+          i.resize_to_fit(1920,1920).write("./app/images/posts/#{post.folder_hash}/#{img.file_normal}")
+        end
+
+        if width > 450 || height > 450
+          i.resize_to_fit(450,450).write("./app/images/posts/#{post.folder_hash}/#{img.file_preview}")
+        else
+          i.write("./app/images/posts/#{post.folder_hash}/#{img.file_preview}")          
+        end
+
+        if width > 150 || height > 150
+          i.resize_to_fill(150,150).write("./app/images/posts/#{post.folder_hash}/#{img.file_icon}")
+        else
+          i.write("./app/images/posts/#{post.folder_hash}/#{img.file_icon}")
+        end
 
       end
       redirect "/admin/#{params[:id]}?tab=galerie"
@@ -171,10 +185,10 @@ class App < Sinatra::Base
       post = Post.find_by(sha1: params[:post_id])
       img = Image.find_by(id: params[:img_id].to_i)
       File.delete("./app/images/posts/#{post.folder_hash}/#{img.file_icon}")
-      img.file_icon = SecureRandom.hex[0..7]+'.'+img.file_normal.split('.')[1].downcase
+      img.file_icon = SecureRandom.hex[0..7]+'.'+img.file_preview.split('.')[1].downcase
       img.save
 
-      i = Magick::Image.read("./app/images/posts/#{post.folder_hash}/#{img.file_normal}").first
+      i = Magick::Image.read("./app/images/posts/#{post.folder_hash}/#{img.file_preview}").first
       i.crop(dx, dy, width, height).resize_to_fill(150,150).write("./app/images/posts/#{post.folder_hash}/#{img.file_icon}")
 
       post.icon_id = img.id

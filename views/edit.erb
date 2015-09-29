@@ -45,7 +45,7 @@
 
             </div>
 
-            <div class="float-right square-150 border-soft is-clickable" data-toggle="modal" data-target="#iconModal" title="Modifier l'icône" style="background-image: url('/images/posts/<% if @post.icon %><%=@post.folder_hash%>/<%=@post.icon.file_icon%><%else%>no-image.jpg<%end%>')">
+            <div class="float-right square-150 border-soft is-clickable" data-toggle="modal" data-target="#iconModal" title="Modifier l'icône" style="background-image: url('/images/<% if @post.icon %>posts/<%=@post.folder_hash%>/<%=@post.icon.file_icon%><%else%>no-image.jpg<%end%>')">
             </div>
 
             <button type="submit" class="btn btn-default col-sm-12 margin-top-15">Sauver</button>
@@ -136,10 +136,10 @@
           <% else %>
           <select id="img_id" name="img_id" class="form-control">
             <%@post.images.each do |img|%>
-              <option value="<%= img.id%>" data-bordel="<%=img.file_normal%>" ><%= img.titre%></option>
+              <option value="<%= img.id%>" data-bordel="<%=img.file_preview%>" ><%= img.titre%></option>
             <% end %>
           </select>
-          <img id="iconBase" class="margin-auto img-icon" src="/images/posts/<%=@post.folder_hash%>/<%=@post.images[0].file_normal%>">
+          <img id="iconBase" class="margin-auto img-icon" src="/images/posts/<%=@post.folder_hash%>/<%=@post.images[0].file_preview%>">
           <% end %>
         </div>
 
@@ -154,3 +154,25 @@
     </div>
   </div>
 </div>
+<script>
+$(document).ready(function(){
+
+  Jcropify();
+  $("#img_id").on('change', function() {
+    var img_file = $("option:selected", this).attr("data-bordel");
+
+
+    var img = $("<img id='iconBase' />").attr('src', "/images/posts/<%=@post.folder_hash%>/"+img_file).addClass("margin-auto img-icon")
+    .load(function() {
+      if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth == 0) {
+          console.log('broken image!');
+      } else {
+          $(".jcrop-holder, #iconBase").remove()
+          $(".modal-body").append(img)
+          Jcropify();
+      }
+    });
+  });
+
+});
+</script>

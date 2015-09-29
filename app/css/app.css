@@ -69,8 +69,9 @@ html, body{
   font-size: 36pt;
 }
 .subtitle{
-  font-size: 13pt;
+  font-size: 14pt;
   margin-left: 150px;
+  font-style: italic;
 }
 
 .border-soft{
