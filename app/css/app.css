@@ -203,3 +203,7 @@ p.center{
   display: inline-block;
   text-align: right;
 }
+
+.alinea{
+  margin-left: 30px;
+}
