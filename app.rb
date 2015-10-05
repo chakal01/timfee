@@ -95,6 +95,7 @@ class App < Sinatra::Base
 
     before do
       @title = "Admin Copeaux d'aronde"
+      @is_admin = "_admin"
       protected!
     end
 
