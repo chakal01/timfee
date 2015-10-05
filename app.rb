@@ -161,8 +161,8 @@ class App < Sinatra::Base
         i = Magick::Image.read("./app/images/posts/#{post.folder_hash}/#{img.file_normal}").first
         width, height = i.columns, i.rows
         
-        if width > 1920 || height > 1920
-          i.resize_to_fit(1920,1920).write("./app/images/posts/#{post.folder_hash}/#{img.file_normal}")
+        if width > 1024 || height > 1024
+          i.resize_to_fit(1024,1024).write("./app/images/posts/#{post.folder_hash}/#{img.file_normal}")
         end
 
         if width > 450 || height > 450
