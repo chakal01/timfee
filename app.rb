@@ -240,15 +240,6 @@ class App < Sinatra::Base
       halt 200
     end
 
-    post '/orderimg' do
-      params[:list].each_with_index do |id, index|
-        img = Image.find_by(id: id)
-        img.order = index
-        img.save
-      end
-      halt 200
-    end
-
     post '/:id' do
       @post = Post.find_by(sha1: params[:id])
       redirect '/admin' if @post.nil?

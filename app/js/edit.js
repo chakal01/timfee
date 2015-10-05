@@ -31,40 +31,12 @@ $(document).ready(function(){
         data: {titre: $("#titre_"+id).val()}
       });
     }
-    $(".editTitleImage span").toggleClass("display-none");
+    $(this).children("span").toggleClass("display-none");
     $("#titre_"+id).attr('readonly', !$("#titre_"+id).attr('readonly'));
   });
 
   $('#contenthtml').markItUp(mySettings);
 
   $(".tbselected").click(function(){ $(this).select(); });
-
-  /* Order image galery */
-
-  /* Return a helper with preserved width of cells */
-  var fixHelper = function(e, ui) {
-    ui.children().each(function() {
-      $(this).width($(this).width());
-    });
-    return ui;
-  };
-
-  $("#galerie").sortable({
-    helper: fixHelper,
-    handle: $(".sortable-handler"),
-    stop: function(){
-      var list = [];
-      $(".img_id").each(function(elem){
-        list.push($(this).html());
-      });
-      console.log("stop")
-      console.log(list)
-      $.ajax({
-        method: 'post',
-        url: "/admin/orderimg",
-        data: {"list": list}
-      });
-    }
-  }).disableSelection();
 
 });

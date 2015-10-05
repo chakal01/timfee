@@ -144,9 +144,12 @@ p.center{
 .float-left{float: left;}
 .float-right{float: right;}
 .width-650{width: 650px;}
+.width-620{width: 620px;}
 .width-565{width: 565px;}
+.width-215{width: 215px;}
+.width-150{width: 150px;}
 .border-right-10{border-right: 30px solid transparent;}
-.border-left-10 {border-left: 30px solid transparent;}
+.border-left-10 {border-left: 10px solid transparent;}
 .width-50p{width: 50%;}
 .height-150{height: 150px;}
 .square-150{
@@ -209,3 +212,4 @@ p.center{
 .alinea{
   margin-left: 30px;
 }
+

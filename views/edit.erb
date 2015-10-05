@@ -66,37 +66,34 @@
 
         <div role="tabpanel" id="galerie" class="tab-pane<% if @tab=="galerie"%> active<%end%>">
           <%@post.images.each do |img|%>
-            <div class="galerie-row">
+            <div class="galerie-row col-sm-6">
               <a href="/images/posts/<%=img.post.folder_hash%>/<%=img.file_normal%>" title="Voir l'image en grand" target="_blank">
                 <div class="float-left square-150 border-soft" style="background-image: url('/images/posts/<%=img.post.folder_hash%>/<%=img.file_preview%>');background-size: 150px; background-repeat: no-repeat;"></div>
               </a>
 
-              <div class="float-right height-150 width-650 border-left-10">
-                <input type="text" id="titre_<%= img.id%>" value="<%= img.titre %>" class="form-control width-565 display-inline" readonly="readonly"/>
+              <div class="float-right height-150 width-215 border-left-10">
+                <input type="text" id="titre_<%= img.id%>" value="<%= img.titre %>" class="form-control display-inline width-150" readonly="readonly"/>
                 <a class="btn btn-default editTitleImage margin-left-10" name="<%= img.id%>" style="margin-top: -2px;">
                   <span class="glyphicon glyphicon-floppy-disk display-none"></span>
                   <span class="glyphicon glyphicon-pencil"></span>
                 </a>
                 
-                <input type="text" value='!#<%=img.order+1%>' class="form-control margin-top-15 tbselected" readonly="readonly" />
-                <a href="/admin/img/<%= img.id %>/delete" title="Supprimer" onclick="return confirm('Es-tu sûr de vouloir supprimer cette image ?');" class="btn btn-default margin-top-15">
+                <input type="text" value='!#<%=img.order+1%>' class="form-control margin-top-15 width-150 tbselected display-inline" readonly="readonly" />
+                <a href="/admin/img/<%= img.id %>/delete" title="Supprimer" onclick="return confirm('Es-tu sûr de vouloir supprimer cette image ?');" class="btn btn-default margin-left-10">
                   <span class="glyphicon glyphicon-trash"></span>
-                </a>
-                <span class="display-none img_id"><%= img.id %></span>
-                <a class="btn btn-default margin-top-15" title="Trier">
-                  <span class="glyphicon glyphicon-screenshot sortable-handler"></span>
                 </a>
               </div>
 
             </div>
           <% end %>
-            <div class="galerie-row">
+
+            <div class="galerie-row col-sm-12">
 
               <form method="post" action='/admin/upload' class="form-horizontal" enctype="multipart/form-data" >
                 
                 <div class="float-left square-150 border-soft" style="background-size: 150px;"></div>
 
-                <div class="float-right height-150 width-650 border-left-10">
+                <div class="float-right height-150 width-620 border-left-10">
                   <input type="hidden" name="id" value="<%=@post.sha1%>">
                   <input type='text' name='titre' placeholder="Titre" class="form-control" placeholder="Titre">
                   <input type='file' name='myfile[]' class="form-control margin-top-15" multiple>
