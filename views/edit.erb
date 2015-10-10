@@ -65,6 +65,21 @@
         </div>
 
         <div role="tabpanel" id="galerie" class="tab-pane<% if @tab=="galerie"%> active<%end%>">
+
+          <div class="galerie-row col-sm-12">
+            <form method="post" action='/admin/upload' class="form-horizontal" enctype="multipart/form-data" >
+
+              <div class="float-left square-150 border-soft" style="background-size: 150px;"></div>
+
+              <div class="float-right height-150 width-620 border-left-10">
+                <input type="hidden" name="id" value="<%=@post.sha1%>">
+                <input type='text' name='titre' placeholder="Titre" class="form-control" placeholder="Titre">
+                <input type='file' name='myfile[]' class="form-control margin-top-15" multiple>
+                <button type="submit" class="btn btn-default margin-top-15 width-100p">Upload</button>
+              </div>
+            </form>
+          </div>
+
           <%@post.images.each do |img|%>
             <div class="galerie-row col-sm-6">
               <a href="/images/posts/<%=img.post.folder_hash%>/<%=img.file_normal%>" title="Voir l'image en grand" target="_blank">
@@ -87,20 +102,7 @@
             </div>
           <% end %>
 
-            <div class="galerie-row col-sm-12">
-
-              <form method="post" action='/admin/upload' class="form-horizontal" enctype="multipart/form-data" >
-                
-                <div class="float-left square-150 border-soft" style="background-size: 150px;"></div>
-
-                <div class="float-right height-150 width-620 border-left-10">
-                  <input type="hidden" name="id" value="<%=@post.sha1%>">
-                  <input type='text' name='titre' placeholder="Titre" class="form-control" placeholder="Titre">
-                  <input type='file' name='myfile[]' class="form-control margin-top-15" multiple>
-                  <button type="submit" class="btn btn-default margin-top-15 width-100p">Upload</button>
-                </div>  
-              </form>
-            </div>
+            
         </div>
 
 
