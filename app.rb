@@ -6,9 +6,12 @@ require './models/post'
 require './models/image'
 require './helpers/auth_helper'
 require './helpers/view_helper'
+require './helpers/captcha_helper'
+require './helpers/mailer_helper'
 require 'securerandom'
 require 'logger'
 require 'sinatra/assetpack'
+
 
 db = YAML.load_file('./config/database.yml')["development"]
 
@@ -25,7 +28,9 @@ class App < Sinatra::Base
   register Sinatra::AssetPack
   register Sinatra::Namespace
   include ViewHelper
-  
+  include CaptchaHelper
+  include MailerHelper
+
   config = YAML.load_file('./config/application.yml')
 
   if config["file_logger"]
@@ -254,6 +259,28 @@ class App < Sinatra::Base
   end
 
 # End of ADMIN section
+  get '/contact' do
+    erb :contact
+  end
+
+  get '/contact2' do
+    erb :contact2
+  end
+
+  post '/contact' do
+    puts "#{params}"
+    if !captcha_pass?
+      # flash[:notice] = "Mauvais Captcha."
+      redirect "/contact"
+    elsif params["email"]!=params["confirmEmail"]
+      # flash[:notice] = "Emails non compatibles."
+      redirect "/contact"
+    else
+      send_mail(params["email"], params["title"], params["content"])
+      # flash[:notice] = "Mail envoyé"
+      redirect "/"
+    end
+  end
 
   get '/:id' do
     @post = Post.find_by(sha1: params[:id])

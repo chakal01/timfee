@@ -213,3 +213,7 @@ p.center{
   margin-left: 30px;
 }
 
+.form-width{
+  width: 400px;
+  margin: auto;
+}
