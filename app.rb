@@ -276,13 +276,15 @@ class App < Sinatra::Base
     cookies[:content] = params[:content]
 
     if !captcha_pass?
-      flash[:error] = "Mauvais Captcha."
+      flash[:error] = "Code de sécurité erroné."
     elsif params[:email]!=params[:confirmEmail]
       flash[:error] = "Emails non compatibles."
+    elsif params[:content].nil?
+      flash[:error] = "Veuillez écrire un message."
     else
       send_mail(params[:email], params[:title], params[:content])
       cookies[:title], cookies[:content] = nil, nil
-      flash[:success] = "Mail envoyé"
+      flash[:success] = "Votre message a bien été envoyé à Timothée Delay, je vous recontacterai au plus vite."
     end
     redirect params[:page]
   end

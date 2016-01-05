@@ -18,6 +18,9 @@
 			<h1><%= @post.titre %></h1>
 		</div>
 		<%= h get_content(@post) %>
+		<% if @post.content.match /!#contact/ %>
+			<%= erb :contact %>
+		<% end %>
 	</div>
 
 	<%= erb(:footer, :collection => @objects, locals: {"footer_class" => "margin-top-15"}) %>

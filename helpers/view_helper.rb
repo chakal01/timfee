@@ -9,7 +9,8 @@ module ViewHelper
         </a>
         </p>"
     end
-    return post.content.gsub(/!#([0-9]*)/) { images["#{$1}"] }
+
+    return post.content.gsub(/!#contact/, '').gsub(/!#([0-9]*)/) { images["#{$1}"] }
 
   end
   
