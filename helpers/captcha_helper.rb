@@ -12,10 +12,6 @@ module CaptchaHelper
     @captcha_session ||= rand(9000) + 1000
   end
 
-  def captcha_answer_tag
-    "<input id=\"captcha-answer\" class=\"form-control\" name=\"captcha_answer\" type=\"text\" size=\"10\"/>"
-  end
-
   def captcha_image_tag
     "<input name=\"captcha_session\" type=\"hidden\" value=\"#{captcha_session}\"/>\n" +
     "<img id=\"captcha-image\" style=\"float: left;\" src=\"http://captchator.com/captcha/image/#{captcha_session}\"/>"

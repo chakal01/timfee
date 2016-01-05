@@ -11,6 +11,8 @@ require './helpers/mailer_helper'
 require 'securerandom'
 require 'logger'
 require 'sinatra/assetpack'
+require 'sinatra/flash'
+  require "sinatra/cookies"
 
 
 db = YAML.load_file('./config/database.yml')["development"]
@@ -30,6 +32,9 @@ class App < Sinatra::Base
   include ViewHelper
   include CaptchaHelper
   include MailerHelper
+  enable :sessions
+  register Sinatra::Flash
+  helpers Sinatra::Cookies
 
   config = YAML.load_file('./config/application.yml')
 
@@ -54,6 +59,7 @@ class App < Sinatra::Base
     css :layout, ['/css/bootstrap.min.css', '/css/app.css']
 
     js :admin, ['/js/admin.js']
+    js :contact, ['/js/contact.js']
 
     js :edit, ['/markitup/jquery.markitup.js', '/markitup/sets/html/set.js', '/js/edit.js', '/js/jquery.Jcrop.min.js']
     css :edit, ['/css/jquery.Jcrop.min.css', '/markitup/skins/simple/style.css', '/markitup/sets/html/style.css']
@@ -258,28 +264,27 @@ class App < Sinatra::Base
 
   end
 
-# End of ADMIN section
+  # End of ADMIN section
   get '/contact' do
     erb :contact
   end
 
-  get '/contact2' do
-    erb :contact2
-  end
-
   post '/contact' do
-    puts "#{params}"
+    cookies[:email] = params[:email]
+    cookies[:confirmEmail] = params[:confirmEmail]
+    cookies[:title] = params[:title]
+    cookies[:content] = params[:content]
+
     if !captcha_pass?
-      # flash[:notice] = "Mauvais Captcha."
-      redirect "/contact"
-    elsif params["email"]!=params["confirmEmail"]
-      # flash[:notice] = "Emails non compatibles."
-      redirect "/contact"
+      flash[:error] = "Mauvais Captcha."
+    elsif params[:email]!=params[:confirmEmail]
+      flash[:error] = "Emails non compatibles."
     else
-      send_mail(params["email"], params["title"], params["content"])
-      # flash[:notice] = "Mail envoyé"
-      redirect "/"
+      send_mail(params[:email], params[:title], params[:content])
+      cookies[:title], cookies[:content] = nil, nil
+      flash[:success] = "Mail envoyé"
     end
+    redirect params[:page]
   end
 
   get '/:id' do
