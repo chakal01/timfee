@@ -18,8 +18,11 @@ db = YAML.load_file('./config/database.yml')["development"]
 require './lib/zip_file_generator'
 require 'zip'
 
+
 desc "DB backup and Zip the current folder into an zip archive. Send both files by email."
 task :backup do
+
+  temp_folder = YAML.load_file('./config/application.yml')["temp_folder"]
 
   t = Time.now.to_i
   db_file = "../db_#{t}.sql"
@@ -35,7 +38,7 @@ task :backup do
   zf.write()
   puts "Zip backup done"
 
-  MailerHelper.send_backup_mail("/home/mint/Documents/db_#{t}.sql", "/home/mint/Documents/timfee_#{t}.zip")
+  MailerHelper.send_backup_mail("#{temp_folder}/db_#{t}.sql", "#{temp_folder}/timfee_#{t}.zip")
 
   # delete db_backup and zip
   FileUtils.rm "/home/mint/Documents/db_#{t}.sql"
