@@ -22,3 +22,4 @@ gem 'capistrano', '2.15.6'
 gem 'capistrano_colors'
 
 gem 'mail'
+gem 'zip'

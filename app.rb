@@ -91,7 +91,7 @@ class App < Sinatra::Base
   get '/' do
     @posts = Post.where(actif: true).order(:order)
     @meta_keywords = "sur mesure multimatériaux mobilier ébénisterie écolo bois naturel sain finitions qualité artisanat d'art"
-    @meta_description = "Mobilier multimatériaux, d'intérieur et d'extérieur, par Timothée Delay."
+    @meta_description = "Timothée DELAY, ébéniste d'art à Ceyzériat, dans l'Ain (01). Mobilier unique, multimatériaux, d'intérieur et d'extérieur. Fabrication sur mesure."
     erb :main
   end
 
