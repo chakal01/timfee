@@ -1,0 +1,30 @@
+<div class="margin-left-50 padding-top-20">
+  <h1>Notifications</h1>
+</div>
+
+<div id="contentEdit">
+<a href="/admin" class="return2">Retour à l'admin</a>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Titre</th>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @notifications.each do |notif| %>
+        <tr>
+          <td><%= notif.email %></td>
+          <td><%= notif.title %></td>
+          <td><%= notif.content %></td>
+        </tr>
+      <% end %>
+
+    </tbody>
+  </table>
+    
+</div>
+
+<div class="height-50"></div>

@@ -188,7 +188,12 @@ p.center{
   right: 20px;
   margin-top: 14px;
 }
-
+.link_notifications{
+  position: absolute;
+  top: 30px;
+  right: 160px;
+  font-size: 10pt;
+}
 .footer{
   margin: auto;
 }

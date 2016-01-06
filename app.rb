@@ -4,6 +4,7 @@ Bundler.require(:default)
 require 'yaml'
 require './models/post'
 require './models/image'
+require './models/notification'
 require './helpers/auth_helper'
 require './helpers/view_helper'
 require './helpers/captcha_helper'
@@ -113,6 +114,11 @@ class App < Sinatra::Base
     get '' do
       @posts = Post.all.order(:order)
       erb :admin
+    end
+
+    get '/notifications' do
+      @notifications = Notification.all
+      erb :notifications
     end
 
     post '/new' do
@@ -281,6 +287,7 @@ class App < Sinatra::Base
     else
       send_mail(params[:email], params[:title], params[:content])
       cookies[:title], cookies[:content] = nil, nil
+      Notification.create(email: params[:email], title: params[:title], content: params[:content])
       flash[:success] = "Votre message a bien été envoyé à Timothée Delay, je vous recontacterai au plus vite."
     end
     redirect params[:page]
