@@ -36,7 +36,7 @@ module MailerHelper
         from config["email"]["from"]
         to config["email"]["to"].join(";")
         subject "Backup"
-        body "Salut !"
+        body "Salut ! Voici un petit backup. Le dossier du projet et la DB. Nice, isn't it ? N'est-il pas ? :)"
         add_file :filename => 'backup.sql', :content => File.read(db_file)
         add_file :filename => 'backup.zip', :content => File.read(zip_file)
       end

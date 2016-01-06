@@ -42,8 +42,8 @@ task :backup do
   MailerHelper.send_backup_mail("#{temp_folder}/db_#{t}.sql", "#{temp_folder}/timfee_#{t}.zip")
 
   # delete db_backup and zip
-  FileUtils.rm "/home/mint/Documents/db_#{t}.sql"
-  FileUtils.rm "/home/mint/Documents/timfee_#{t}.zip"
+  FileUtils.rm "#{temp_folder}/db_#{t}.sql"
+  FileUtils.rm "#{temp_folder}/timfee_#{t}.zip"
   puts "Files deleted."
 
 end

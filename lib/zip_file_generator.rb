@@ -23,7 +23,7 @@ class ZipFileGenerator
   def write
     entries = Dir.entries(@input_dir) - %w(. ..)
 
-    Zip::ZipFile.open(@output_file, Zip::ZipFile::CREATE) do |io|
+    Zip::File.open(@output_file, Zip::File::CREATE) do |io|
       write_entries entries, '', io
     end
   end
