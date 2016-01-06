@@ -22,18 +22,19 @@ require 'zip'
 desc "DB backup and Zip the current folder into an zip archive. Send both files by email."
 task :backup do
 
-  temp_folder = YAML.load_file('./config/application.yml')["temp_folder"]
+  conf = YAML.load_file('./config/application.yml')
+  temp_folder = conf["temp_folder"]
+  project_folder = conf["project_folder"]
 
   t = Time.now.to_i
-  db_file = "../db_#{t}.sql"
-  zip_file = "../timfee_#{t}.zip"
+  db_file = "#{temp_folder}/db_#{t}.sql"
+  zip_file = "#{temp_folder}/timfee_#{t}.zip"
 
   puts "Starting backup"
   puts "pg_dump -U #{db["username"]} -d #{db['database']} > #{db_file}"
   system "pg_dump -U #{db["username"]} -d #{db['database']} > #{db_file}"
   puts "DB backup done."
 
-  project_folder = "../timfee"  
   zf = ZipFileGenerator.new(project_folder, zip_file)
   zf.write()
   puts "Zip backup done"
