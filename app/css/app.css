@@ -118,6 +118,13 @@ p.center{
   margin: 20px;
   max-width: 450px;   
 }
+.half .item img{
+  max-width: 300px;
+}
+.half{
+  width:45%;
+  float:left;
+}
 
 #preview{
   padding: 10px;

@@ -85,7 +85,7 @@ class App < Sinatra::Base
   end
 
   def h(text)
-    Rack::Utils.unescape(text)
+    Rack::Utils.unescape(text) rescue text
   end
 
   get '/' do
@@ -265,9 +265,6 @@ class App < Sinatra::Base
   end
 
   # End of ADMIN section
-  get '/contact' do
-    erb :contact
-  end
 
   post '/contact' do
     cookies[:email] = params[:email]
