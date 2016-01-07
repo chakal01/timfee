@@ -117,8 +117,13 @@ class App < Sinatra::Base
     end
 
     get '/notifications' do
-      @notifications = Notification.all
+      @notifications = Notification.order(:created_at).reverse
       erb :notifications
+    end
+
+    get '/notification/:id/delete' do
+      Notification.where(id: params[:id]).delete_all
+      redirect '/admin/notifications'
     end
 
     post '/new' do
@@ -278,16 +283,18 @@ class App < Sinatra::Base
     cookies[:title] = params[:title]
     cookies[:content] = params[:content]
 
-    if !captcha_pass?
-      flash[:error] = "Code de sécurité erroné."
-    elsif params[:email]!=params[:confirmEmail]
-      flash[:error] = "Emails non compatibles."
-    elsif params[:content].nil?
-      flash[:error] = "Veuillez écrire un message."
+    errors = []
+    errors << "Emails non compatibles" if params[:email]!=params[:confirmEmail]
+    errors << "Veuillez écrire un message" if params[:content].nil? or params[:content]==""
+    errors << "Code de sécurité erroné" unless captcha_pass?
+    
+    unless errors.empty?
+      errors << "Veuillez retaper le code de sécurité" unless errors.include? "Code de sécurité erroné"
+      flash[:error] = errors.join(', ')
     else
       send_mail(params[:email], params[:title], params[:content])
       cookies[:title], cookies[:content] = nil, nil
-      Notification.create(email: params[:email], title: params[:title], content: params[:content])
+      Notification.create(email: params[:email], title: params[:title], content: params[:content] )
       flash[:success] = "Votre message a bien été envoyé à Timothée Delay, je vous recontacterai au plus vite."
     end
     redirect params[:page]
