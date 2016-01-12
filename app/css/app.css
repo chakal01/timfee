@@ -115,14 +115,15 @@ p.center{
 }
 .item img{
   max-height: 450px;
-  margin: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
   max-width: 450px;   
 }
 .half .item img{
-  max-width: 300px;
+  max-width: 320px;
 }
 .half{
-  width:45%;
+  width:50%;
   float:left;
 }
 
@@ -227,7 +228,7 @@ p.center{
 }
 
 .form-width{
-  width: 400px;
+  width: 450px;
   margin: auto;
   margin-top: 20px;
 }
