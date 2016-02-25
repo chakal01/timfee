@@ -107,6 +107,7 @@ DEPENDENCIES
   sinatra-flash
   sinatra-namespace
   thin
+  tilt (= 1.4.1)
   zip
 
 BUNDLED WITH

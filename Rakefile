@@ -39,11 +39,11 @@ task :backup do
   zf.write()
   puts "Zip backup done"
 
-  MailerHelper.send_backup_mail("#{temp_folder}/db_#{t}.sql", "#{temp_folder}/timfee_#{t}.zip")
+  # MailerHelper.send_backup_mail("#{temp_folder}/db_#{t}.sql", "#{temp_folder}/timfee_#{t}.zip")
 
   # delete db_backup and zip
-  FileUtils.rm "#{temp_folder}/db_#{t}.sql"
-  FileUtils.rm "#{temp_folder}/timfee_#{t}.zip"
-  puts "Files deleted."
+  # FileUtils.rm "#{temp_folder}/db_#{t}.sql"
+  # FileUtils.rm "#{temp_folder}/timfee_#{t}.zip"
+  # puts "Files deleted."
 
 end

@@ -12,6 +12,7 @@ gem 'thin'
 gem 'rake'
 gem 'logger'
 
+gem 'tilt', '1.4.1'
 # sudo apt-get install libmagickwand-dev imagemagick
 gem 'rmagick'
 
