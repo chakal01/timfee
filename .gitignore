@@ -1,6 +1,6 @@
 Gemfile.lock
 /tmp
-/public
+
 /log
 config/database.yml
 config/application.yml
