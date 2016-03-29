@@ -181,7 +181,7 @@ class App < Sinatra::Base
 
     get '/product/preview' do
       @products = Product.order(:order)
-      # @products = Product.where(actif: true).order(:order)
+      @explications = "Sur ce preview, tout les produits sont affichés, qu'ils soient actifs ou non."
       @return_button = true
       erb :vente
     end
@@ -219,7 +219,6 @@ class App < Sinatra::Base
       halt 200
     end
 
-
     get '/notifications' do
       @notifications = Notification.order(:created_at).reverse
       erb :notifications
@@ -248,6 +247,13 @@ class App < Sinatra::Base
       @form_url = "/admin/#{params[:id]}"
       @titre = "Editer #{@post.titre}"
       erb :edit
+    end
+
+    get '/vente/show' do
+      @products = Product.where(actif: true).order(:order)
+      @explications = "Ce preview correspond à la page telle que vue par les visiteurs du site."
+      @return_button = true
+      erb :vente
     end
 
     get '/:id/show' do

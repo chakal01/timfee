@@ -315,3 +315,7 @@ p.center{
   float: right;
   padding-right: 10px;
 }
+.explications{
+  font-style: italic;
+  font-size: 14px;
+}
