@@ -1,0 +1,65 @@
+<%= js :products %>
+<script src="/js/jquery-ui.min.js"></script>
+<a href="/admin" class="return">Retour à l'admin</a>
+
+<div class="margin-left-50 padding-top-20">
+  <h1>Produits à vendre</h1>
+</div>
+
+<div id="contentEdit">
+
+  <% if flash[:success] %>
+  <div class="alert alert-success">
+    <%= flash[:success] %>
+  </div>
+  <% end %>
+
+  <table class="table" id="sortable">
+    <thead>
+      <tr>
+        <th>Actif</th>
+        <th>Image</th>
+        <th>Nom</th>
+        <th>Description</th>
+        <th>Prix</th>
+        <th>Vendu</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @products.each do |product| %>
+        <tr>
+          <td>
+            <span id="<%= product.id %>" class="id switch-actif glyphicon <%= product.actif ? 'glyphicon-check' : 'glyphicon-unchecked' %> is-clickable"></span>
+          </td>
+          <td>
+            <img class="square-80 border-soft" src="/images/posts/vente/<%=product.image%>" />
+          </td>
+          <td><%= product.name %></td>
+          <td><%= product.desc %></td>
+          <td><%= product.price %></td>
+          <td>
+            <span id="<%= product.id%>" class="switch-sold glyphicon <%= product.actif ? 'glyphicon-check' : 'glyphicon-unchecked' %> is-clickable"></span>
+          </td>
+          <td>
+            <a href="/admin/product/<%= product.id%>" class="btn" title="Editer">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+            <a href="/admin/product/<%= product.id%>/delete" class="btn" title="Supprimer" onclick="return confirm('Es-tu sûr de vouloir supprimer ce produit ?');">
+              <span class="glyphicon glyphicon-trash"></span>
+            </a>
+          </td>
+          <td><span class="glyphicon glyphicon-screenshot is-clickable sortable-handler"></span></td>
+        </tr>
+      <% end %>
+
+    </tbody>
+  </table>
+  
+  <a href="/admin/product/new" class="btn btn-default">Nouveau Produit</a>
+
+  <a href="/admin/product/preview" class="btn btn-default">Rendu</a>
+</div>
+
+<div class="height-50"></div>

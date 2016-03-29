@@ -1,0 +1,36 @@
+<div class="centered">
+  <% if @return_button %> <a href="/admin/product">Retour à la liste</a> <%end%>
+  <h1 class="title generica">Copeaux d'aronde
+  <img src="/images/aronde_title.png"/>
+  </h1>
+  
+  <h2 class="subtitle generica">Mobilier multimatériaux, d'intérieur et d'extérieur, par Timothée Delay</h2>
+
+  <div id="page" class="arial content">
+    <div id="title">
+      <h1>Produits à vendre</h1>
+    </div>
+    
+    <div class="margin-left-20">
+      Text d'intro à changer. Je peux parler de tout ici. De tout. Et en mettre des tas, en abbatre des tonnes. Mais joliement, de façon grâcieuse.
+    </div>
+    <% @products.each do |product| %>
+
+    <div class="product">
+
+      <div class="wrapper">
+        <img src="/images/posts/vente/<%=product.image%>" />
+        <% if product.sold %>
+          <div class="sold"><span>Vendu</span></div>
+        <% end %>
+      </div>
+      <div class="name"><%= product.name %></div>
+      <div class="description"><%= product.desc %></div>
+      <div class="price"><%= product.price %></div>
+    </div>
+    <% end %>    
+  </div>
+
+  <div class="height-50"></div>
+
+</div>

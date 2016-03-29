@@ -5,6 +5,7 @@ require 'yaml'
 require './models/post'
 require './models/image'
 require './models/notification'
+require './models/product'
 require './helpers/auth_helper'
 require './helpers/view_helper'
 require './helpers/captcha_helper'
@@ -13,7 +14,8 @@ require 'securerandom'
 require 'logger'
 require 'sinatra/assetpack'
 require 'sinatra/flash'
-  require "sinatra/cookies"
+require 'sinatra/cookies'
+require 'sinatra/reloader'
 
 
 db = YAML.load_file('./config/database.yml')["development"]
@@ -68,6 +70,8 @@ class App < Sinatra::Base
     js :page, ['/js/lightgallery.js', '/js/page.js']
     css :page, ['/css/lightgallery.css']
 
+    js :products, ['/js/products.js']
+
     js_compression :jsmin
     css_compression :sass
   end
@@ -76,6 +80,10 @@ class App < Sinatra::Base
     if config["file_logger"]
       use ::Rack::CommonLogger, access_logger
     end
+  end
+
+  configure :development do
+    register Sinatra::Reloader
   end
 
   before do
@@ -115,6 +123,102 @@ class App < Sinatra::Base
       @posts = Post.all.order(:order)
       erb :admin
     end
+
+    get '/product' do
+      @products = Product.all.order(:order)
+      erb :products
+    end
+
+    get '/product/new' do
+      @product = Product.new
+      @action = "/admin/product/new"
+      erb :product_edit
+    end
+
+    post '/product/new' do
+      cookies[:name] = params[:name]
+      cookies[:desc] = params[:desc]
+      cookies[:price] = params[:price]
+
+      missing_fields = []
+      missing_fields << "Nom" if params[:name].nil? or params[:name]==""
+      missing_fields << "Description" if params[:desc].nil? or params[:desc]==""
+      missing_fields << "Prix" if params[:price].nil? or params[:price]==""
+      missing_fields << "Image" if params[:image].nil?
+
+      unless missing_fields.empty?
+        flash[:error] = "Données manquantes : "+missing_fields.join(', ')
+        redirect '/admin/product/new'
+
+      else
+        cookies[:desc], cookies[:price], cookies[:name] = nil, nil, nil
+        pa = params.slice("name", "desc", "price", "image")
+        @product = Product.create(pa)
+
+        format = params["image"][:filename].split('.')[1].downcase
+        @product.update_attributes({image: "img_#{@product.id}.#{format}"})
+
+        File.open("./app/images/posts/vente/#{@product.image}", "wb") do |f|
+          f.write(params["image"][:tempfile].read)
+        end
+
+        i = Magick::Image.read("./app/images/posts/vente/#{@product.image}").first        
+        i.resize_to_fit(800,800).write("./app/images/posts/vente/#{@product.image}")
+
+        flash[:success] = "Produit créé !"
+        redirect '/admin/product'
+      end
+    end
+
+    post '/product/order' do
+      params[:list].each_with_index do |id, index|
+        product = Product.find_by(id: id)
+        product.order = index
+        product.save
+      end
+      halt 200
+    end
+
+    get '/product/preview' do
+      @products = Product.order(:order)
+      # @products = Product.where(actif: true).order(:order)
+      @return_button = true
+      erb :vente
+    end
+
+    get '/product/:id' do
+      @product = Product.find(params[:id])
+      @edition = true
+      @action = "/admin/product/#{params[:id]}"
+      redirect '/admin/product' if @product.nil?
+      erb :product_edit
+    end
+
+    post '/product/:id' do
+      pa = params.slice("name", "desc", "price")
+      Product.find(params[:id]).update_attributes(pa)
+      redirect '/admin/product'
+    end
+
+    get '/product/:id/delete' do
+      Product.where(id: params[:id]).destroy_all
+      redirect '/admin/product'
+    end
+
+    get '/:id/toggle_actif' do
+      @product = Product.find(params[:id])
+      @product.actif = !@product.actif
+      @product.save
+      halt 200
+    end
+
+    get '/:id/toggle_sold' do
+      @product = Product.find(params[:id])
+      @product.sold = !@product.sold
+      @product.save
+      halt 200
+    end
+
 
     get '/notifications' do
       @notifications = Notification.order(:created_at).reverse
@@ -298,6 +402,12 @@ class App < Sinatra::Base
       flash[:success] = "Votre message a bien été envoyé à Timothée Delay, je vous recontacterai au plus vite."
     end
     redirect params[:page]
+  end
+
+  get '/vente' do
+    @products = Product.where(actif: true).order(:order)
+    @return_button = false
+    erb :vente
   end
 
   get '/:id' do
