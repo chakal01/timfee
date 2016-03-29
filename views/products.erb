@@ -40,7 +40,7 @@
           <td><%= product.desc %></td>
           <td><%= product.price %></td>
           <td>
-            <span id="<%= product.id%>" class="switch-sold glyphicon <%= product.actif ? 'glyphicon-check' : 'glyphicon-unchecked' %> is-clickable"></span>
+            <span id="<%= product.id%>" class="switch-sold glyphicon <%= product.sold ? 'glyphicon-check' : 'glyphicon-unchecked' %> is-clickable"></span>
           </td>
           <td>
             <a href="/admin/product/<%= product.id%>" class="btn" title="Editer">
