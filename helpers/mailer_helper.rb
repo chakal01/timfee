@@ -19,7 +19,7 @@ module MailerHelper
         from config["email"]["from"]
         to config["email"]["to"].join(";")
         subject config["email"]["subject"]
-        body "Salut ! Une demande de contact a été postée sur http://copeauxdaronde.fr !\n\n\nPar: #{email}\nObjet: #{title}\n\n#{content}"
+        body "Une demande de contact a été postée sur http://copeauxdaronde.fr !\n\n\nPar: #{email}\nObjet: #{title}\n\n#{content}"
       end
       mail.deliver
     rescue => e

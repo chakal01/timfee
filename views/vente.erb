@@ -17,9 +17,12 @@
     </div>
     
 
-    <div class="margin-left-20">
+    <div class="margin-left-20 ">
       Text d'intro à changer. Je peux parler de tout ici. De tout. Et en mettre des tas, en abbatre des tonnes. Mais joliement, de façon grâcieuse.
     </div>
+      <hr class="margin-bottom-80">
+
+
     <% @products.each do |product| %>
 
     <div class="product">
@@ -32,8 +35,17 @@
       </div>
       <div class="name"><%= product.name %></div>
       <div class="description"><%= product.desc %></div>
-      <div class="price"><%= product.price %></div>
+      <% if product.more_desc %>
+        <div class="read-more-wrap">
+          <input type="checkbox" class="read-more-state" id="post-2" />
+          <div class="read-more-target"><%= (product.more_desc||"").gsub(/\n/, "<br>") %></div>
+            <label for="post-2" class="btn btn-default read-more-trigger"></label>
+        </div>
+      <% end %>
+      <a href="/contact?title=<%= product.name %>" class="btn btn-default margin-top-10" />Demande de renseignements</a>
     </div>
+
+    <hr>
     <% end %>    
   </div>
 

@@ -104,8 +104,10 @@ class App < Sinatra::Base
     erb :main
   end
 
-  
-
+  get '/contact' do
+    cookies[:title] = "Demande de renseignements: #{params[:title]}"
+    redirect '/aab0f' #4b901'
+  end
 
   # ============ admin section
 
@@ -138,12 +140,12 @@ class App < Sinatra::Base
     post '/product/new' do
       cookies[:name] = params[:name]
       cookies[:desc] = params[:desc]
-      cookies[:price] = params[:price]
+      cookies[:more_desc] = params[:more_desc]
 
       missing_fields = []
       missing_fields << "Nom" if params[:name].nil? or params[:name]==""
       missing_fields << "Description" if params[:desc].nil? or params[:desc]==""
-      missing_fields << "Prix" if params[:price].nil? or params[:price]==""
+      missing_fields << "Prix" if params[:more_desc].nil? or params[:more_desc]==""
       missing_fields << "Image" if params[:image].nil?
 
       unless missing_fields.empty?
@@ -151,8 +153,8 @@ class App < Sinatra::Base
         redirect '/admin/product/new'
 
       else
-        cookies[:desc], cookies[:price], cookies[:name] = nil, nil, nil
-        pa = params.slice("name", "desc", "price", "image")
+        cookies[:desc], cookies[:more_desc], cookies[:name] = nil, nil, nil
+        pa = params.slice("name", "desc", "more_desc", "image")
         @product = Product.create(pa)
 
         format = params["image"][:filename].split('.')[1].downcase
@@ -195,7 +197,7 @@ class App < Sinatra::Base
     end
 
     post '/product/:id' do
-      pa = params.slice("name", "desc", "price")
+      pa = params.slice("name", "desc", "more_desc")
       Product.find(params[:id]).update_attributes(pa)
       redirect '/admin/product'
     end

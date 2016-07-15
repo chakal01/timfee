@@ -20,16 +20,20 @@
   </div>
   <% end %>
 
-  <% [["name", "Nom", @product.name, cookies[:name], "inputNom", "text", "Armoire Magique"],
-      ["desc", "Description", @product.desc, cookies[:desc], "inputDesc", "text", "Un pays à dévcouvrir !"],
-      ["price", "Prix", @product.price, cookies[:price], "inputPrice", "text", "150€ (à débattre)"],
+  <% [["name", "Nom", @product.name, cookies[:name], "inputNom", "text", "Nom"],
+      ["desc", "Description", @product.desc, cookies[:desc], "inputDesc", "text", "Description"],
+      ["more_desc", "Plus d'infos", @product.more_desc, cookies[:more_desc], "inputMore", "textarea", "Plus d'infos"],
       ["image", "Image", @product.image, cookies[:image], "inputImage", "file"]].each do |name, label, variable, cookie, id, type, placeholder| %>
 
     <% unless @edition and name=="image" %>
     <div class="form-group">
       <label for="<%= id %>" class="col-sm-2 control-label"><%= label %></label>
       <div class="col-sm-10">
-        <input type="<%= type %>" class="form-control" id="<%= id %>" name="<%= name %>" placeholder="<%= placeholder %>" value="<%= variable||cookie %>">
+        <% if type!="textarea" %>
+          <input type="<%= type %>" class="form-control" id="<%= id %>" name="<%= name %>" placeholder="<%= placeholder %>" value="<%= variable||cookie %>">
+        <% else %>
+          <textarea class="form-control" id="<%= id %>" rows="7" name="<%= name %>"><%= variable||cookie %></textarea>
+        <% end %>
       </div>
     </div>
     <% end %>
