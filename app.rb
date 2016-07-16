@@ -141,11 +141,13 @@ class App < Sinatra::Base
       cookies[:name] = params[:name]
       cookies[:desc] = params[:desc]
       cookies[:more_desc] = params[:more_desc]
+      cookies[:state] = params[:state]
 
       missing_fields = []
       missing_fields << "Nom" if params[:name].nil? or params[:name]==""
       missing_fields << "Description" if params[:desc].nil? or params[:desc]==""
       missing_fields << "Prix" if params[:more_desc].nil? or params[:more_desc]==""
+      missing_fields << "State" if params[:state].nil? or params[:state]==""
       missing_fields << "Image" if params[:image].nil?
 
       unless missing_fields.empty?
@@ -197,7 +199,7 @@ class App < Sinatra::Base
     end
 
     post '/product/:id' do
-      pa = params.slice("name", "desc", "more_desc")
+      pa = params.slice("name", "desc", "more_desc", "state")
       Product.find(params[:id]).update_attributes(pa)
       redirect '/admin/product'
     end

@@ -265,6 +265,7 @@ hr{
   border-radius: 5px;
 }
 
+
 .sold {
    position: absolute;
    left: -5px; top: -5px;
@@ -284,7 +285,7 @@ hr{
    -o-transform:      rotate(-45deg);
    transform:         rotate(-45deg);
    width: 100px; display: block;
-   background: #8a8a8a;
+   /*background: #8a8a8a;*/
    box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
    position: absolute;
    top: 20px; left: -20px;
@@ -310,6 +311,10 @@ hr{
    border-bottom: 3px solid transparent;
    border-top: 3px solid #555;
 }
+.sold.vendu span{ background: #f6892a; }
+.sold.stock span{ background: #46b842; }
+.sold.commande span{ background: #6F8BA5;  }
+
 
 .product .name{
   font-weight: bold;

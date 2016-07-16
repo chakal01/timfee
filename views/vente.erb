@@ -18,20 +18,18 @@
     
 
     <div class="margin-left-20 ">
-      Text d'intro à changer. Je peux parler de tout ici. De tout. Et en mettre des tas, en abbatre des tonnes. Mais joliement, de façon grâcieuse.
+      Bienvenue dans la boutique Copeaux d'aronde ! 
     </div>
       <hr class="margin-bottom-80">
 
-
+    <% l = {"commande" => "Sur commande", "vendu" => "Vendu", "stock" => "En stock"} %>
     <% @products.each do |product| %>
 
     <div class="product">
 
       <div class="wrapper">
         <img src="/images/posts/vente/<%=product.image%>" />
-        <% if product.sold %>
-          <div class="sold"><span>Vendu</span></div>
-        <% end %>
+        <div class="sold <%= product.state %>"><span><%= l[product.state] %></span></div>
       </div>
       <div class="name"><%= product.name %></div>
       <div class="description"><%= product.desc %></div>

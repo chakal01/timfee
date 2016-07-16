@@ -21,7 +21,7 @@
         <th>Image</th>
         <th>Nom</th>
         <th>Description</th>
-        <th>Vendu</th>
+        <th>Type</th>
         <th></th>
         <th></th>
       </tr>
@@ -37,8 +37,7 @@
           </td>
           <td><%= product.name %></td>
           <td><%= product.desc %></td>
-          <td>
-            <span id="<%= product.id%>" class="switch-sold glyphicon <%= product.sold ? 'glyphicon-check' : 'glyphicon-unchecked' %> is-clickable"></span>
+          <td><%= product.state %>
           </td>
           <td>
             <a href="/admin/product/<%= product.id%>" class="btn" title="Editer">
