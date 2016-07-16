@@ -106,7 +106,7 @@ class App < Sinatra::Base
 
   get '/contact' do
     cookies[:title] = "Demande de renseignements: #{params[:title]}"
-    redirect '/aab0f' #4b901'
+    redirect "/#{config['id_contact']}"
   end
 
   # ============ admin section
